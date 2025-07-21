@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/JIDO.iml" filepath="$PROJECT_DIR$/.idea/JIDO.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JIDO_.main.iml" filepath="$PROJECT_DIR$/.idea/modules/JIDO_.main.iml" />
     </modules>
   </component>
 </project>
