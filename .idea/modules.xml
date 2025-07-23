@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/JIDO.iml" filepath="$PROJECT_DIR$/.idea/JIDO.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JIDO_.main.iml" filepath="$PROJECT_DIR$/.idea/modules/JIDO_.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JIDO_.iml" filepath="$PROJECT_DIR$/.idea/modules/JIDO_.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JIDO_.test.iml" filepath="$PROJECT_DIR$/.idea/modules/JIDO_.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.goorm.JIDO_.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.goorm.JIDO_.main.iml" />
     </modules>
   </component>
 </project>
