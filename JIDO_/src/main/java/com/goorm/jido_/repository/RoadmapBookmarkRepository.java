@@ -1,6 +1,6 @@
 package com.goorm.jido_.repository;
 
-import com.goorm.jido_.domain.RoadmapBookmark;
+import com.goorm.jido_.entity.RoadmapBookmark;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

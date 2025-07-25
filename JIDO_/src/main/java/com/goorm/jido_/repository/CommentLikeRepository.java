@@ -1,6 +1,6 @@
 package com.goorm.jido_.repository;
 
-import com.goorm.jido_.domain.CommentLike;
+import com.goorm.jido_.entity.CommentLike;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CommentLikeRepository extends JpaRepository<CommentLike, Long> {

@@ -1,9 +1,12 @@
-package com.goorm.jido_.domain;
+package com.goorm.jido_.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
 public class Comment {
     @Id
     @GeneratedValue

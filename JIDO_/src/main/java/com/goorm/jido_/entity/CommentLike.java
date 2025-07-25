@@ -1,17 +1,16 @@
-package com.goorm.jido_.domain;
+package com.goorm.jido_.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-public class RoadmapLike {
-    @Id
-    @GeneratedValue
-    private Long likeId;
+public class CommentLike {
+    @Id @GeneratedValue
+    private Long commentLikeId;
 
     @ManyToOne
-    @JoinColumn(name = "roadmap_id")
-    private Roadmap roadmap;
+    @JoinColumn(name = "comment_id")
+    private Comment comment;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -19,4 +18,3 @@ public class RoadmapLike {
 
     private LocalDateTime createdAt;
 }
-

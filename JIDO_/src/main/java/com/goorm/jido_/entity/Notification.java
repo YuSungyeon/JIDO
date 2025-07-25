@@ -1,9 +1,16 @@
-package com.goorm.jido_.domain;
+package com.goorm.jido_.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Getter
+@Setter
 public class Notification {
     @Id
     @GeneratedValue
@@ -19,11 +26,10 @@ public class Notification {
 
     private String type; // "like", "comment", "bookmark"
 
-    @ManyToOne
-    @JoinColumn(name = "roadmap_id")
-    private Roadmap referenceId;
+    private Long referenceId;
 
     private String message;
     private boolean isRead = false;
     private LocalDateTime createdAt;
+
 }

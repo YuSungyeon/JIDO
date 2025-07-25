@@ -1,21 +1,13 @@
-package com.goorm.jido_.domain;
+package com.goorm.jido_.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 
 @Entity
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class RoadmapBookmark {
+public class RoadmapLike {
     @Id
     @GeneratedValue
-    private Long bookmarkId;
+    private Long likeId;
 
     @ManyToOne
     @JoinColumn(name = "roadmap_id")
@@ -27,3 +19,4 @@ public class RoadmapBookmark {
 
     private LocalDateTime createdAt;
 }
+

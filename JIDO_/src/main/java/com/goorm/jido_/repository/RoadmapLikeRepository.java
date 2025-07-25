@@ -1,6 +1,6 @@
 package com.goorm.jido_.repository;
 
-import com.goorm.jido_.domain.RoadmapLike;
+import com.goorm.jido_.entity.RoadmapLike;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RoadmapLikeRepository extends JpaRepository<RoadmapLike, Long> {

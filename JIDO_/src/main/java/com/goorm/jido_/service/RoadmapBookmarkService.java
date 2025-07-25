@@ -1,12 +1,11 @@
 package com.goorm.jido_.service;
 
-import com.goorm.jido_.domain.Roadmap;
-import com.goorm.jido_.domain.RoadmapBookmark;
-import com.goorm.jido_.domain.User;
+import com.goorm.jido_.entity.Roadmap;
+import com.goorm.jido_.entity.RoadmapBookmark;
+import com.goorm.jido_.entity.User;
 import com.goorm.jido_.repository.RoadmapBookmarkRepository;
 import com.goorm.jido_.repository.RoadmapRepository;
 import com.goorm.jido_.repository.UserRepository;
-import com.goorm.jido_.service.notification.NotificationService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
