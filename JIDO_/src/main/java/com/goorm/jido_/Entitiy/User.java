@@ -1,4 +1,4 @@
-package com.goorm.jido_.DAO;
+package com.goorm.jido_.Entitiy;
 
 import jakarta.persistence.*;
 import lombok.Getter;
