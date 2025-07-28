@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface RoadmapBookmarkRepository extends JpaRepository<RoadmapBookmark, Long> {
-    List<RoadmapBookmark> findByUserId(Long userId); // 유저가 북마크한 로드맵 목록
+    List<RoadmapBookmark> findByUserIdOrderByCreatedAtDesc(Long userId); // 유저가 북마크한 로드맵 목록
     boolean existsByUserIdAndRoadmapId(Long userId, Long roadmapId); // 해당 로드맵을 북마크 했지는지 확인
     void deleteByUserIdAndRoadmapId(Long userId, Long roadmapId); // 북마크 취소
     long countByRoadmapId(Long roadmapId); // 로드맵의 북마크 수

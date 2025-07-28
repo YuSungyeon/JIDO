@@ -23,6 +23,12 @@ public class RoadmapBookmarkService {
     private final UserRepository userRepository;
     private final NotificationService notificationService;
 
+    /**
+     * 사용자가 로드맵을 북마크
+     *
+     * @param userId    북마크한 사용자 ID
+     * @param roadmapId 북마크 대상 로드맵 ID
+     */
     @Transactional
     public void addBookmark(Long userId, Long roadmapId) {
         if (bookmarkRepository.existsByUserIdAndRoadmapId(userId, roadmapId)) {
@@ -47,13 +53,19 @@ public class RoadmapBookmarkService {
             notificationService.sendNotification(
                     roadmap.getAuthor().getUserId(), // receiver
                     userId,                         // sender
-                    "bookmark",                     // type
+                    "roadmap_bookmark",             // type
                     roadmapId,                      // reference ID
                     user.getNickname() + "님이 회원님의 로드맵을 북마크했습니다."
             );
         }
     }
 
+    /**
+     * 사용자의 북마크 삭제
+     *
+     * @param userId    사용자 ID
+     * @param roadmapId 북마크 삭제 대상 로드맵 ID
+     */
     @Transactional
     public void removeBookmark(Long userId, Long roadmapId) {
         if (!bookmarkRepository.existsByUserIdAndRoadmapId(userId, roadmapId)) {
@@ -62,18 +74,36 @@ public class RoadmapBookmarkService {
         bookmarkRepository.deleteByUserIdAndRoadmapId(userId, roadmapId);
     }
 
+    /**
+     * 해당 사용자의 북마크 여부 확인
+     *
+     * @param userId    사용자 ID
+     * @param roadmapId 로드맵 ID
+     * @return 북마크 여부 (true/false)
+     */
     @Transactional(readOnly = true)
     public boolean isBookmarked(Long userId, Long roadmapId) {
         return bookmarkRepository.existsByUserIdAndRoadmapId(userId, roadmapId);
     }
 
+    /**
+     * 해당 로드맵이 받은 전체 북마크 수 조회
+     *
+     * @param roadmapId 로드맵 ID
+     */
     @Transactional(readOnly = true)
     public long countBookmarks(Long roadmapId) {
         return bookmarkRepository.countByRoadmapId(roadmapId);
     }
 
+    /**
+     * 사용자가 북마크한 로드맵 목록 조회 (최신순)
+     *
+     * @param userId 사용자 ID
+     * @return 해당 사용자가 북마크한 로드맵 리스트
+     */
     @Transactional(readOnly = true)
     public List<RoadmapBookmark> getBookmarksByUser(Long userId) {
-        return bookmarkRepository.findByUserId(userId);
+        return bookmarkRepository.findByUserIdOrderByCreatedAtDesc(userId);
     }
 }
