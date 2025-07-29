@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @Entity
 @Getter
-@Table(name = "InterestCategory")
-public class InterestCategory {
+@Table(name = "category")
+public class Category {
   @Id
   @Column(name = "category_id")
   private String categoryId; // 관심분야 카테고리 코드형 ID (예: a1.11.01)

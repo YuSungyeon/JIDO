@@ -1,6 +1,7 @@
 package com.goorm.jido_.Controller;
 
 import com.goorm.jido_.Entitiy.User;
+import com.goorm.jido_.Repository.CategoryRepository;
 import com.goorm.jido_.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,9 @@ public class UserController {
 
   @Autowired
   private UserService userService;
+
+  @Autowired
+  private CategoryRepository categoryRepository;
 
   @GetMapping("/{nickname}")
   public User findBynickname(@PathVariable String nickname) {
