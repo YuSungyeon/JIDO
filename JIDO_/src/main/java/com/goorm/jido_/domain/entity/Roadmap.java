@@ -1,6 +1,6 @@
 package com.goorm.jido_.domain.entity;
 
-import com.goorm.jido_.Entitiy.User;
+import com.goorm.jido_.domain.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,6 +1,6 @@
 package com.goorm.jido_.domain.service;
 
-import com.goorm.jido_.Entitiy.User;
+import com.goorm.jido_.domain.entity.User;
 import com.goorm.jido_.domain.dto.RoadmapRequestDto;
 import com.goorm.jido_.domain.entity.Roadmap;
 import com.goorm.jido_.domain.repository.RoadmapRepository;
