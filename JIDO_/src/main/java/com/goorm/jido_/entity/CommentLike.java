@@ -1,9 +1,16 @@
 package com.goorm.jido_.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Getter
+@Setter
 public class CommentLike {
     @Id @GeneratedValue
     private Long commentLikeId;

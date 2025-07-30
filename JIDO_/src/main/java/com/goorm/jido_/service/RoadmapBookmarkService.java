@@ -71,6 +71,18 @@ public class RoadmapBookmarkService {
         if (!bookmarkRepository.existsByUserIdAndRoadmapId(userId, roadmapId)) {
             throw new IllegalStateException("북마크하지 않은 로드맵입니다.");
         }
+
+        // 알림 삭제 (읽지 않은 북마크 알림만)
+        Roadmap roadmap = roadmapRepository.findById(roadmapId)
+                .orElseThrow(() -> new EntityNotFoundException("로드맵을 찾을 수 없습니다."));
+
+        Long receiverId = roadmap.getAuthor().getUserId();
+        if (!userId.equals(receiverId)) {
+            notificationService.deleteUnreadNotification(
+                    "roadmap_bookmark", roadmapId, userId, receiverId
+            );
+        }
+
         bookmarkRepository.deleteByUserIdAndRoadmapId(userId, roadmapId);
     }
 

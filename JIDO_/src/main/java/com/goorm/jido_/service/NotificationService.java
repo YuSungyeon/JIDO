@@ -72,6 +72,7 @@ public class NotificationService {
                         .map(Roadmap::getRoadmapId)
                         .orElseThrow(() -> new EntityNotFoundException("댓글에 해당하는 로드맵을 찾을 수 없습니다."));
                 yield "/roadmaps/" + roadmapId + "?highlightComment=" + referenceId;
+
             }
             default -> "/";
         };
@@ -110,8 +111,6 @@ public class NotificationService {
 
     /**
      * 특정 알림을 읽음 처리한 후, 이동할 URL 반환
-     * - 읽음 상태로 바꾸고 DB에 저장
-     * - 프론트에서는 이 URL로 리다이렉트하거나 페이지 이동 가능
      *
      * @param notificationId 알림 ID
      * @return 이동할 URL
@@ -125,5 +124,30 @@ public class NotificationService {
         notificationRepository.save(notification);
 
         return resolveNotificationUrl(notification.getType(), notification.getReferenceId());
+    }
+
+    /**
+     * 특정 유저가 읽은 알림 전체 삭제
+     *
+     * @param userId 유저 ID
+     * */
+    @Transactional
+    public void deleteAllReadNotifications(Long userId) {
+        notificationRepository.deleteByReceiverIdAndIsReadTrue(userId);
+    }
+
+    /**
+     * 알림 취소
+     *
+     * @param type          알림 타입
+     * @param referenceId   관련된 ID
+     * @param senderId      알림을 보낸 사용자 ID
+     * @param receiverId    알림을 받는 사용자 ID
+     * */
+    @Transactional
+    public void deleteUnreadNotification(String type, Long referenceId, Long senderId, Long receiverId) {
+        notificationRepository.deleteBySenderIdAndReceiverIdAndTypeAndReferenceIdAndIsReadFalse(
+                senderId, receiverId, type, referenceId
+        );
     }
 }

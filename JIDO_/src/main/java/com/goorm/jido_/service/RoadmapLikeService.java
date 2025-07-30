@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +24,9 @@ public class RoadmapLikeService {
 
     /**
      * 로드맵 좋아요 추가
+     *
+     * @param userId 사용자 ID
+     * @param roadmapId 로드맵 ID
      */
     @Transactional
     public void addLike(Long userId, Long roadmapId) {
@@ -57,17 +61,31 @@ public class RoadmapLikeService {
 
     /**
      * 로드맵 좋아요 취소
+     *
+     * @param userId 사용자 ID
+     * @param roadmapId 로드맵 ID
      */
     @Transactional
     public void removeLike(Long userId, Long roadmapId) {
         if (!likeRepository.existsByUserIdAndRoadmapId(userId, roadmapId)) {
             throw new IllegalStateException("좋아요하지 않은 로드맵입니다.");
         }
+        // 알림 삭제 (읽지 않은 좋아요 알림만)
+        Roadmap roadmap = roadmapRepository.findById(roadmapId)
+                .orElseThrow(() -> new EntityNotFoundException("로드맵을 찾을 수 없습니다."));
+
+        notificationService.deleteUnreadNotification(
+                "roadmap_like", roadmapId, userId, roadmap.getAuthor().getUserId()
+        );
+
         likeRepository.deleteByUserIdAndRoadmapId(userId, roadmapId);
     }
 
     /**
      * 좋아요 여부 확인
+     *
+     * @param userId 사용자 ID
+     * @param roadmapId 로드맵 ID
      */
     @Transactional(readOnly = true)
     public boolean isLiked(Long userId, Long roadmapId) {
@@ -76,10 +94,18 @@ public class RoadmapLikeService {
 
     /**
      * 로드맵 좋아요 수 조회
+     *
+     * @param roadmapId 로드맵 ID
      */
     @Transactional(readOnly = true)
     public long countLikes(Long roadmapId) {
         return likeRepository.countByRoadmapId(roadmapId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Roadmap> getRoadmapsWithMinLikes(long likeCount) {
+        List<Long> roadmapIds = likeRepository.findRoadmapIdsWithLikeCountGreaterThanEqual(likeCount);
+        return roadmapRepository.findAllById(roadmapIds);
     }
 
 }
