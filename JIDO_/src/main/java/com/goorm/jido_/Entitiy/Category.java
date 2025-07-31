@@ -1,10 +1,14 @@
 package com.goorm.jido_.Entitiy;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "category")
 public class Category {
   @Id
@@ -19,4 +23,12 @@ public class Category {
 
   @Column(name = "parent_category_id")
   private String parentCategoryId; // 상위 카테고리 ID (코드형)
+
+  @Builder
+  public Category(String categoryId, String name, int depth, String parentCategoryId) {
+    this.categoryId = categoryId;
+    this.name = name;
+    this.depth = depth;
+    this.parentCategoryId = parentCategoryId;
+  }
 }

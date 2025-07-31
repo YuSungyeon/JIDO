@@ -1,12 +1,15 @@
 package com.goorm.jido_.Entitiy.UserInterest;
 
+import com.goorm.jido_.Entitiy.Category;
+import com.goorm.jido_.Entitiy.User;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 // UserInterest 복합키 클래스
 public class UserInterestId implements Serializable {
-  private Long userId;
-  private String categoryId;
+  private User user;
+  private Category category;
 
   public UserInterestId(){}
 
@@ -15,12 +18,13 @@ public class UserInterestId implements Serializable {
     if (this == o) return true;
     if (!(o instanceof UserInterestId)) return false;
     UserInterestId that = (UserInterestId) o;
-    return Objects.equals(userId, that.userId) &&
-            Objects.equals(categoryId, that.categoryId);
+
+    return Objects.equals(user.getUserId(), that.user.getUserId()) &&
+            Objects.equals(category.getCategoryId(), that.category.getCategoryId());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(userId, categoryId);
+    return Objects.hash(user.getUserId(), category.getCategoryId());
   }
 }
