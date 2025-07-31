@@ -19,7 +19,7 @@ public class CategoryController {
   private final CategoryService categoryService;
 
 
-  @PostMapping("api/categories")
+  @GetMapping("categories")
   public ResponseEntity<List<CategoryResponseDto>>  getCategories() {
     return ResponseEntity.status(HttpStatus.OK)
                     .body(categoryService.findAll());

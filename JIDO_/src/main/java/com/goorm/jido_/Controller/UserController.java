@@ -16,7 +16,7 @@ public class UserController {
 
   private final UserService userService;
 
-  @PostMapping("/user/{nickname}")
+  @GetMapping("/user/{nickname}")
   public ResponseEntity<UserResponseDto> findBynickname(@PathVariable String nickname) {
     return ResponseEntity.status(HttpStatus.OK)
                     .body(userService.findByNickname(nickname));
