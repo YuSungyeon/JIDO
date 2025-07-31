@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 package com.goorm.jido_.domain.entity;
-=======
-package com.goorm.jido_.Entitiy;
->>>>>>> origin/feature/roadmap
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -32,7 +28,6 @@ public class User {
 
     @Column(name = "age")
     private Integer age;
-
 
     // created_at 열이 AUTO_INCREMENT 이므로, 아래와 같이 설정
     // insertable = false -> 	JPA가 insert 시 이 컬럼 값을 쿼리에 포함하지 않음

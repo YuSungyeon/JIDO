@@ -1,15 +1,10 @@
 package com.goorm.jido_.domain.service;
 
-<<<<<<< HEAD
 import com.goorm.jido_.domain.entity.User;
 import com.goorm.jido_.domain.dto.RoadmapRequestDto;
 import com.goorm.jido_.domain.entity.Roadmap;
 import com.goorm.jido_.domain.repository.RoadmapRepository;
 import com.goorm.jido_.domain.repository.UserRepository;
-=======
-import com.goorm.jido_.domain.entity.Roadmap;
-import com.goorm.jido_.domain.repository.RoadmapRepository;
->>>>>>> origin/feature/roadmap
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +15,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RoadmapService {
     private final RoadmapRepository roadmapRepository;
-<<<<<<< HEAD
     private final UserRepository userRepository;
 
     public Roadmap saveRoadmap(RoadmapRequestDto dto) {
@@ -34,10 +28,6 @@ public class RoadmapService {
         roadmap.setCategory(dto.getCategory());
         roadmap.setIsPublic(dto.getIsPublic());
 
-=======
-
-    public Roadmap saveRoadmap(Roadmap roadmap) {
->>>>>>> origin/feature/roadmap
         return roadmapRepository.save(roadmap);
     }
 
