@@ -18,8 +18,14 @@ public class UserController {
 
   @GetMapping("/user/{nickname}")
   public ResponseEntity<UserResponseDto> findBynickname(@PathVariable String nickname) {
-    return ResponseEntity.status(HttpStatus.OK)
-                    .body(userService.findByNickname(nickname));
-  }
+    try{
+      return ResponseEntity.status(HttpStatus.OK)
+              .body(userService.findByNickname(nickname));
 
+    }catch (IllegalArgumentException e){
+      return ResponseEntity.status(HttpStatus.NOT_FOUND)
+              .body(new UserResponseDto()); // 값이 빈 상태 반환.
+    }
+
+  }
 }
