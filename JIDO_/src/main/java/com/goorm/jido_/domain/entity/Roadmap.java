@@ -1,6 +1,10 @@
 package com.goorm.jido_.domain.entity;
 
+<<<<<<< HEAD
 import com.goorm.jido_.domain.entity.User;
+=======
+import com.goorm.jido_.Entitiy.User;
+>>>>>>> origin/feature/roadmap
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
