@@ -1,30 +1,23 @@
 package com.goorm.jido_.DTO;
 
 import com.goorm.jido_.Entitiy.User;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
 public class UserResponseDto {
-  Long userId;
-  String userLoginId;
-  String email;
-  String nickname;
-  String password;
-  Integer age;
+  private final Long userId;
+  private final String userLoginId;
+  private final String email;
+  private final String nickname;
+  private final String password;
+  private final Integer age;
 
-  public static UserResponseDto from(User user) {
-    return  new UserResponseDto(
-            user.getUserId(),
-            user.getUserLoginId(),
-            user.getEmail(),
-            user.getNickname(),
-            user.getPassword(),
-            user.getAge()
-    );
+  public UserResponseDto(User user) {
+    this.userId = user.getUserId();
+    this.userLoginId = user.getUserLoginId();
+    this.email = user.getEmail();
+    this.nickname = user.getNickname();
+    this.password = user.getPassword();
+    this.age = user.getAge();
   }
 }

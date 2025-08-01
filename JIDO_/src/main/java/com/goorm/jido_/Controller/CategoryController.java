@@ -21,7 +21,12 @@ public class CategoryController {
 
   @GetMapping("categories")
   public ResponseEntity<List<CategoryResponseDto>>  getCategories() {
+    List<CategoryResponseDto> categories = categoryService.findAll()
+            .stream()
+            .map(CategoryResponseDto::new)
+            .toList();
+
     return ResponseEntity.status(HttpStatus.OK)
-                    .body(categoryService.findAll());
+                    .body(categories);
   }
 }

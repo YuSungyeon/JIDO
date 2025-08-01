@@ -16,14 +16,7 @@ public class CategoryService {
 
   private final CategoryRepository categoryRepository;
 
-  public List<CategoryResponseDto> findAll() { // 모든 카테고리 반환
-    List<Category> categories =  categoryRepository.findAll();
-    List<CategoryResponseDto> categoriesDto = new ArrayList<>();
-
-    for (Category category : categories) {
-      categoriesDto.add(CategoryResponseDto.from(category)); // dto
-    }
-
-    return categoriesDto;
+  public List<Category> findAll() { // 모든 카테고리 반환
+    return categoryRepository.findAll();
   }
 }
