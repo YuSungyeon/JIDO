@@ -16,7 +16,7 @@ public class RoadmapSection {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long sectionId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roadmap_id", nullable = false)
     private Roadmap roadmap;
 

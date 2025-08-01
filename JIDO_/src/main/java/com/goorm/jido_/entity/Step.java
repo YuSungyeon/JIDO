@@ -18,7 +18,7 @@ public class Step {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long stepId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "section_id", nullable = false)
     private RoadmapSection section;
 

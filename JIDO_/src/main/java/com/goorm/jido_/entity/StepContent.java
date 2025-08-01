@@ -17,7 +17,7 @@ public class StepContent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long stepContentId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "step_id", nullable = false)
     private Step step;
 

@@ -20,7 +20,7 @@ public class Roadmap {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)
-    private User author; // User 테이블과 연관관계 필요하면 @ManyToOne 추가 가능
+    private User author;
 
     private String title;
 

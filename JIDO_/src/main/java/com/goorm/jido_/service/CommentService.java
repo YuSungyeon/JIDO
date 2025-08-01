@@ -1,8 +1,10 @@
 package com.goorm.jido_.service;
 
+import com.goorm.jido_.dto.CommentResponse;
 import com.goorm.jido_.entity.Comment;
 import com.goorm.jido_.entity.Roadmap;
 import com.goorm.jido_.entity.User;
+import com.goorm.jido_.repository.CommentLikeRepository;
 import com.goorm.jido_.repository.CommentRepository;
 import com.goorm.jido_.repository.RoadmapRepository;
 import com.goorm.jido_.repository.UserRepository;
@@ -20,6 +22,7 @@ import java.util.List;
 public class CommentService {
 
     private final CommentRepository commentRepository;
+    private final CommentLikeService commentLikeService;
     private final RoadmapRepository roadmapRepository;
     private final UserRepository userRepository;
     private final NotificationService notificationService;
@@ -32,7 +35,7 @@ public class CommentService {
      * @param content   댓글 내용
      */
     @Transactional
-    public Comment addComment(Long userId, Long roadmapId, String content) {
+    public CommentResponse addComment(Long userId, Long roadmapId, String content) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
         Roadmap roadmap = roadmapRepository.findById(roadmapId)
@@ -59,7 +62,7 @@ public class CommentService {
             );
         }
 
-        return comment;
+        return CommentResponse.from(comment, 0L, false);
     }
 
     /**
@@ -114,8 +117,16 @@ public class CommentService {
      * @return 해당 로드맵에 작성된 댓글 리스트
      */
     @Transactional(readOnly = true)
-    public List<Comment> getCommentsByRoadmap(Long roadmapId) {
-        return commentRepository.findByRoadmapIdOrderByCreatedAtDesc(roadmapId);
+    public List<CommentResponse> getCommentsByRoadmap(Long roadmapId, Long userId) {
+        List<Comment> comments = commentRepository.findByRoadmapIdOrderByCreatedAtDesc(roadmapId);
+
+        return comments.stream()
+                .map(comment -> {
+                    long likeCount = commentLikeService.countCommentLikes(comment.getCommentId());
+                    boolean likedByMe = commentLikeService.isLiked(userId, comment.getCommentId());
+                    return CommentResponse.from(comment, likeCount, likedByMe);
+                })
+                .toList();
     }
 
     /**

@@ -6,7 +6,6 @@ import com.goorm.jido_.entity.User;
 import com.goorm.jido_.repository.CommentLikeRepository;
 import com.goorm.jido_.repository.CommentRepository;
 import com.goorm.jido_.repository.UserRepository;
-import com.goorm.jido_.service.NotificationService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,7 @@ public class CommentLikeService {
      * @param commentId 좋아요 대상 댓글 ID
      */
     @Transactional
-    public void addCommentLike(Long userId, Long commentId) {
+    public void addLike(Long userId, Long commentId) {
         if (likeRepository.existsByUserIdAndCommentId(userId, commentId)) {
             throw new IllegalStateException("이미 좋아요한 댓글입니다.");
         }
@@ -68,7 +67,7 @@ public class CommentLikeService {
      * @param commentId 댓글 ID
      */
     @Transactional
-    public void removeCommentLike(Long userId, Long commentId) {
+    public void removeLike(Long userId, Long commentId) {
         if (!likeRepository.existsByUserIdAndCommentId(userId, commentId)) {
             throw new IllegalStateException("좋아요하지 않은 댓글입니다.");
         }

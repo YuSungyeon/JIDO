@@ -127,6 +127,18 @@ public class NotificationService {
     }
 
     /**
+     * 사용자가 받은 모든 읽지 않은 알림을 읽음 처리
+     *
+     * @param userId 유저 ID
+     */
+    @Transactional
+    public void markAllAsRead(Long userId) {
+        List<Notification> notifications = notificationRepository.findByReceiverIdAndIsReadFalseOrderByCreatedAtDesc(userId);
+        notifications.forEach(notification -> notification.setRead(true));
+        notificationRepository.saveAll(notifications);
+    }
+
+    /**
      * 특정 유저가 읽은 알림 전체 삭제
      *
      * @param userId 유저 ID
