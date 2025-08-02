@@ -33,8 +33,8 @@ public class WebSecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http,
                                          CustomAuthenticationSuccessHandler successHandler,
-                                         CustomAuthenticationFailureHandler failureHandler,
-                                         CustomLogoutSuccessHandler logoutSuccessHandler) throws Exception {
+                                         CustomAuthenticationFailureHandler failureHandler
+                                         ) throws Exception {
     return http
             .authorizeHttpRequests(auth -> auth // 인증, 인가 설정
                     .requestMatchers(
@@ -54,9 +54,7 @@ public class WebSecurityConfig {
                     .failureHandler(failureHandler)
             )
             .logout(logout -> logout
-                    .logoutUrl("/api/logout")
-                    .logoutSuccessHandler(logoutSuccessHandler)
-                    .invalidateHttpSession(true)
+                    .logoutUrl("/none") // 시큐리티 기본 로그아웃 비활성화
             )
             .csrf(AbstractHttpConfigurer::disable) // csrf 비활성화
             .build();
