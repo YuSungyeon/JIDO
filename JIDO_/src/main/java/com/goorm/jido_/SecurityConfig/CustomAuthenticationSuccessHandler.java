@@ -1,12 +1,10 @@
-package com.goorm.jido_.Config;
+package com.goorm.jido_.SecurityConfig;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.goorm.jido_.Entitiy.User;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -34,7 +32,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     result.put("message", "login successful");
     result.put("username", userDetails.getUsername());
     result.put("roles", userDetails.getAuthorities());
-    result.put("nickname", userDetails.getNickname());
+    result.put("userId", userDetails.getUserId());
 
     String json = new ObjectMapper().writeValueAsString(result);
     response.getWriter().write(json);
