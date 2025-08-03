@@ -12,7 +12,6 @@ import java.util.List;
 @Builder
 @Table(name = "step")
 public class Step {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "step_id")

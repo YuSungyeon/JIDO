@@ -11,7 +11,6 @@ import java.util.List;
 @Builder
 @Table(name = "roadmap")
 public class Roadmap {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "roadmap_id")

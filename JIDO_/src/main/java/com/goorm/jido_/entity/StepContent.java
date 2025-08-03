@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Builder
 @Table(name = "step_content")
 public class StepContent {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long stepContentId;
