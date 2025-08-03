@@ -25,6 +25,8 @@ public class UserController {
   private final UserService userService;
   private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
+
+  // 사용자 조회 (유저 찾기)
   @GetMapping("/user/{nickname}")
   public ResponseEntity<UserResponseDto> findBynickname(@PathVariable String nickname) {
     try{
@@ -36,6 +38,14 @@ public class UserController {
       return ResponseEntity.notFound().build();
     }
   }
+
+  // 스크랩 조회 (로드맵 즐겨찾기 기능)
+
+
+  // 개인 활동 조회
+
+
+
 
   // 회원 가입
   @PostMapping("/user")

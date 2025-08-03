@@ -46,7 +46,7 @@ public class User implements UserDetails {
   @Column(name = "created_at", nullable = false, insertable = false, updatable = false)
   private LocalDateTime createdAt; // 가입 일시
 
-  @Column(name = "updated_at")
+  @Column(name = "updated_at", insertable = false)
   private LocalDateTime updatedAt; // 정보 수정일시
 
   @Builder
