@@ -1,7 +1,7 @@
 package com.goorm.jido_.service;
 import com.goorm.jido_.dto.SignupRequestDto;
-import com.goorm.jido_.entitiy.User;
-import com.goorm.jido_.entitiy.userInterest.UserInterest;
+import com.goorm.jido_.entity.User;
+import com.goorm.jido_.entity.userInterest.UserInterest;
 import com.goorm.jido_.repository.CategoryRepository;
 import com.goorm.jido_.repository.UserInterestRepository;
 import com.goorm.jido_.repository.UserRepository;

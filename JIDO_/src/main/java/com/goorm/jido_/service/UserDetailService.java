@@ -1,6 +1,6 @@
 package com.goorm.jido_.service;
 
-import com.goorm.jido_.entitiy.User;
+import com.goorm.jido_.entity.User;
 import com.goorm.jido_.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;

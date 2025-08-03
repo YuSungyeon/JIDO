@@ -1,7 +1,7 @@
 package com.goorm.jido_.security_config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.goorm.jido_.entitiy.User;
+import com.goorm.jido_.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;

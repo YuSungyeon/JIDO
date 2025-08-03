@@ -1,6 +1,6 @@
 package com.goorm.jido_.dto;
 
-import com.goorm.jido_.entitiy.User;
+import com.goorm.jido_.entity.User;
 import lombok.Getter;
 
 @Getter

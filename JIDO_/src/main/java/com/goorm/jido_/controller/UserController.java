@@ -3,7 +3,7 @@ package com.goorm.jido_.controller;
 import com.goorm.jido_.dto.SignupRequestDto;
 import com.goorm.jido_.dto.SignupResponseDto;
 import com.goorm.jido_.dto.UserResponseDto;
-import com.goorm.jido_.entitiy.User;
+import com.goorm.jido_.entity.User;
 import com.goorm.jido_.security_config.CustomLogoutSuccessHandler;
 import com.goorm.jido_.service.UserService;
 import jakarta.servlet.ServletException;

@@ -1,6 +1,6 @@
 package com.goorm.jido_.dto;
 
-import com.goorm.jido_.entitiy.Category;
+import com.goorm.jido_.entity.Category;
 import lombok.Getter;
 
 @Getter

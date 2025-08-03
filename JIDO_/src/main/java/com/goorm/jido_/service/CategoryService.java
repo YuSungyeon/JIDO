@@ -1,6 +1,6 @@
 package com.goorm.jido_.service;
 
-import com.goorm.jido_.entitiy.Category;
+import com.goorm.jido_.entity.Category;
 import com.goorm.jido_.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

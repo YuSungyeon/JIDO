@@ -20,14 +20,15 @@ public class StepContent {
     @JoinColumn(name = "step_id", nullable = false)
     private Step step;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", name = "content", nullable = false)
     private String content;
 
-    private Boolean isFinished;
+    @Column(name = "created_at", nullable = false, insertable = false, updatable = false)
+    private LocalDateTime craeted_at;
 
-    private LocalDateTime finishedAt;
+    @Column(name = "updated_at", insertable = false)
+    private LocalDateTime updated_at;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
+    @Column(name = "finished", nullable = false)
+    private Boolean finished = false; // 완료 여부
 }

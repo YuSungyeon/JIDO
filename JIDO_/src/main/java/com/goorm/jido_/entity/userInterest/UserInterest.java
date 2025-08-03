@@ -1,7 +1,7 @@
-package com.goorm.jido_.entitiy.userInterest;
+package com.goorm.jido_.entity.userInterest;
 
-import com.goorm.jido_.entitiy.Category;
-import com.goorm.jido_.entitiy.User;
+import com.goorm.jido_.entity.Category;
+import com.goorm.jido_.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

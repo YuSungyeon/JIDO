@@ -1,6 +1,6 @@
 package com.goorm.jido_.repository;
 
-import com.goorm.jido_.entitiy.Category;
+import com.goorm.jido_.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

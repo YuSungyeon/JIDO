@@ -1,4 +1,4 @@
-package com.goorm.jido_.entitiy;
+package com.goorm.jido_.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
