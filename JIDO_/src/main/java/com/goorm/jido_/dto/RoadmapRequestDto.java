@@ -1,4 +1,4 @@
-package com.goorm.jido_.domain.dto;
+package com.goorm.jido_.dto;
 
 import lombok.Getter;
 import lombok.Setter;

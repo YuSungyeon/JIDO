@@ -1,10 +1,10 @@
-package com.goorm.jido_.domain.service;
+package com.goorm.jido_.service;
 
-import com.goorm.jido_.domain.entity.User;
-import com.goorm.jido_.domain.dto.RoadmapRequestDto;
-import com.goorm.jido_.domain.entity.Roadmap;
-import com.goorm.jido_.domain.repository.RoadmapRepository;
-import com.goorm.jido_.domain.repository.UserRepository;
+import com.goorm.jido_.entity.User;
+import com.goorm.jido_.dto.RoadmapRequestDto;
+import com.goorm.jido_.entity.Roadmap;
+import com.goorm.jido_.repository.RoadmapRepository;
+import com.goorm.jido_.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

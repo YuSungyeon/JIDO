@@ -1,7 +1,7 @@
-package com.goorm.jido_.domain.controller;
+package com.goorm.jido_.controller;
 
-import com.goorm.jido_.domain.entity.StepContent;
-import com.goorm.jido_.domain.service.StepContentService;
+import com.goorm.jido_.entity.StepContent;
+import com.goorm.jido_.service.StepContentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

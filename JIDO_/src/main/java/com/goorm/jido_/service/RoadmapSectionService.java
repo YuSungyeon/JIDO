@@ -1,7 +1,7 @@
-package com.goorm.jido_.domain.service;
+package com.goorm.jido_.service;
 
-import com.goorm.jido_.domain.entity.RoadmapSection;
-import com.goorm.jido_.domain.repository.RoadmapSectionRepository;
+import com.goorm.jido_.entity.RoadmapSection;
+import com.goorm.jido_.repository.RoadmapSectionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

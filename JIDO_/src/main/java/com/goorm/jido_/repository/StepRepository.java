@@ -1,6 +1,6 @@
-package com.goorm.jido_.domain.repository;
+package com.goorm.jido_.repository;
 
-import com.goorm.jido_.domain.entity.Step;
+import com.goorm.jido_.entity.Step;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StepRepository extends JpaRepository<Step, Long> {

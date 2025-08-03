@@ -1,8 +1,8 @@
-package com.goorm.jido_.domain.controller;
+package com.goorm.jido_.controller;
 
-import com.goorm.jido_.domain.dto.RoadmapRequestDto;
-import com.goorm.jido_.domain.entity.Roadmap;
-import com.goorm.jido_.domain.service.RoadmapService;
+import com.goorm.jido_.dto.RoadmapRequestDto;
+import com.goorm.jido_.entity.Roadmap;
+import com.goorm.jido_.service.RoadmapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,4 +1,4 @@
-package com.goorm.jido_.domain.entity;
+package com.goorm.jido_.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

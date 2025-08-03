@@ -1,7 +1,7 @@
-package com.goorm.jido_.domain.controller;
+package com.goorm.jido_.controller;
 
-import com.goorm.jido_.domain.entity.RoadmapSection;
-import com.goorm.jido_.domain.service.RoadmapSectionService;
+import com.goorm.jido_.entity.RoadmapSection;
+import com.goorm.jido_.service.RoadmapSectionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

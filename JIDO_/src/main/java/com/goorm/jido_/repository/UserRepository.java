@@ -1,6 +1,6 @@
-package com.goorm.jido_.domain.repository;
+package com.goorm.jido_.repository;
 
-import com.goorm.jido_.domain.entity.User;
+import com.goorm.jido_.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

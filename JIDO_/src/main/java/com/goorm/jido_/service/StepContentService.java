@@ -1,7 +1,7 @@
-package com.goorm.jido_.domain.service;
+package com.goorm.jido_.service;
 
-import com.goorm.jido_.domain.entity.StepContent;
-import com.goorm.jido_.domain.repository.StepContentRepository;
+import com.goorm.jido_.entity.StepContent;
+import com.goorm.jido_.repository.StepContentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
