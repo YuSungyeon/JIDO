@@ -1,6 +1,4 @@
 package com.goorm.jido_.entity;
-
-import com.goorm.jido_.entity.roadmap.RoadmapSection;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;

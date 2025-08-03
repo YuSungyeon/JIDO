@@ -1,6 +1,5 @@
 package com.goorm.jido_.entity;
 
-import com.goorm.jido_.entity.roadmap.Step;
 import jakarta.persistence.*;
 import lombok.*;
 

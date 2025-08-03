@@ -1,6 +1,5 @@
 package com.goorm.jido_.entity;
 
-import com.goorm.jido_.entity.roadmap.RoadmapSection;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -21,7 +20,7 @@ public class Step {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "section_id", nullable = false)
-    private com.goorm.jido_.entity.roadmap.RoadmapSection RoadmapSection; // 소속 섹션
+    private RoadmapSection RoadmapSection; // 소속 섹션
 
     @Column(name = "title", nullable = false)
     private String title; // 스텝 제목
@@ -36,5 +35,5 @@ public class Step {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "step", cascade = CascadeType.ALL)
-    private List<com.goorm.jido_.entity.roadmap.StepContent> stepContents; // 해당 스텝의 컨텐츠들
+    private List<StepContent> stepContents; // 해당 스텝의 컨텐츠들
 }
