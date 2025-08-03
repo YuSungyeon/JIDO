@@ -8,9 +8,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface CommentLikeRepository extends JpaRepository<CommentLike, Long> {
-    boolean existsByUserIdAndCommentId(Long userId, Long commentId); // 좋아요를 눌렀는지
-    long countByCommentId(Long commentId); // 댓글별 좋아요 수
-    void deleteByUserIdAndCommentId(Long userId, Long commentId); // 좋아요 취소
+    boolean existsByUser_UserIdAndComment_CommentId(Long userId, Long commentId); // 좋아요를 눌렀는지
+    long countByComment_CommentId(Long commentId); // 댓글별 좋아요 수
+    void deleteByUser_UserIdAndComment_CommentId(Long userId, Long commentId); // 좋아요 취소
 
     @Query(value = """ 
         SELECT c.comment_id

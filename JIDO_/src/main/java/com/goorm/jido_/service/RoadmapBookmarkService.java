@@ -31,7 +31,7 @@ public class RoadmapBookmarkService {
      */
     @Transactional
     public void addBookmark(Long userId, Long roadmapId) {
-        if (bookmarkRepository.existsByUserIdAndRoadmapId(userId, roadmapId)) {
+        if (bookmarkRepository.existsByUser_UserIdAndRoadmap_RoadmapId(userId, roadmapId)) {
             throw new IllegalStateException("이미 북마크한 로드맵입니다.");
         }
 
@@ -68,7 +68,7 @@ public class RoadmapBookmarkService {
      */
     @Transactional
     public void removeBookmark(Long userId, Long roadmapId) {
-        if (!bookmarkRepository.existsByUserIdAndRoadmapId(userId, roadmapId)) {
+        if (!bookmarkRepository.existsByUser_UserIdAndRoadmap_RoadmapId(userId, roadmapId)) {
             throw new IllegalStateException("북마크하지 않은 로드맵입니다.");
         }
 
@@ -83,7 +83,7 @@ public class RoadmapBookmarkService {
             );
         }
 
-        bookmarkRepository.deleteByUserIdAndRoadmapId(userId, roadmapId);
+        bookmarkRepository.deleteByUser_UserIdAndRoadmap_RoadmapId(userId, roadmapId);
     }
 
     /**
@@ -95,7 +95,7 @@ public class RoadmapBookmarkService {
      */
     @Transactional(readOnly = true)
     public boolean isBookmarked(Long userId, Long roadmapId) {
-        return bookmarkRepository.existsByUserIdAndRoadmapId(userId, roadmapId);
+        return bookmarkRepository.existsByUser_UserIdAndRoadmap_RoadmapId(userId, roadmapId);
     }
 
     /**
@@ -105,7 +105,7 @@ public class RoadmapBookmarkService {
      */
     @Transactional(readOnly = true)
     public long countBookmarks(Long roadmapId) {
-        return bookmarkRepository.countByRoadmapId(roadmapId);
+        return bookmarkRepository.countByRoadmap_RoadmapId(roadmapId);
     }
 
     /**
@@ -116,6 +116,6 @@ public class RoadmapBookmarkService {
      */
     @Transactional(readOnly = true)
     public List<RoadmapBookmark> getBookmarksByUser(Long userId) {
-        return bookmarkRepository.findByUserIdOrderByCreatedAtDesc(userId);
+        return bookmarkRepository.findByUser_UserIdOrderByCreatedAtDesc(userId);
     }
 }

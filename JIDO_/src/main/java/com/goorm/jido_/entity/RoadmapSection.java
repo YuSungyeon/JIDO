@@ -6,7 +6,6 @@ import lombok.*;
 @Entity
 @Table(name = "roadmap_section")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

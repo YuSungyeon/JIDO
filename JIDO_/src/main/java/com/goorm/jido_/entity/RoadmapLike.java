@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter
 public class RoadmapLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

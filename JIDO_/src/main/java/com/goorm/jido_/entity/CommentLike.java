@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Getter
-@Setter
 public class CommentLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -4,5 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface RoadmapSectionRepository extends JpaRepository<RoadmapSection, Long> {
-    List<RoadmapSection> findByRoadmapIdOrderBySectionNumAsc(Long roadmapId);
+    List<RoadmapSection> findByRoadmap_RoadmapIdOrderBySectionNumAsc(Long roadmapId);
 }

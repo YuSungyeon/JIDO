@@ -48,7 +48,7 @@ public class NotificationService {
                 .type(type)
                 .referenceId(referenceId)
                 .message(message)
-                .isRead(false)
+                .read(false)
                 .createdAt(LocalDateTime.now())
                 .build();
 
@@ -85,7 +85,7 @@ public class NotificationService {
      */
     @Transactional(readOnly = true)
     public List<NotificationResponse> getNotificationsForUser(Long userId) {
-        return notificationRepository.findByReceiverIdOrderByCreatedAtDesc(userId).stream()
+        return notificationRepository.findByReceiver_UserIdOrderByCreatedAtDesc(userId).stream()
                 .map(n -> new NotificationResponse(
                         n.getMessage(),
                         n.getCreatedAt(),
@@ -100,7 +100,7 @@ public class NotificationService {
      */
     @Transactional(readOnly = true)
     public List<NotificationResponse> getUnreadNotifications(Long userId) {
-        return notificationRepository.findByReceiverIdAndIsReadFalseOrderByCreatedAtDesc(userId).stream()
+        return notificationRepository.findByReceiver_UserIdAndReadFalseOrderByCreatedAtDesc(userId).stream()
                 .map(n -> new NotificationResponse(
                         n.getMessage(),
                         n.getCreatedAt(),
@@ -120,7 +120,7 @@ public class NotificationService {
         Notification notification = notificationRepository.findById(notificationId)
                 .orElseThrow(() -> new EntityNotFoundException("알림이 존재하지 않습니다."));
 
-        notification.setRead(true); // 읽음 처리
+        notification.markAsRead(); // 읽음 처리
         notificationRepository.save(notification);
 
         return resolveNotificationUrl(notification.getType(), notification.getReferenceId());
@@ -133,8 +133,8 @@ public class NotificationService {
      */
     @Transactional
     public void markAllAsRead(Long userId) {
-        List<Notification> notifications = notificationRepository.findByReceiverIdAndIsReadFalseOrderByCreatedAtDesc(userId);
-        notifications.forEach(notification -> notification.setRead(true));
+        List<Notification> notifications = notificationRepository.findByReceiver_UserIdAndReadFalseOrderByCreatedAtDesc(userId);
+        notifications.forEach(Notification::markAsRead);
         notificationRepository.saveAll(notifications);
     }
 
@@ -145,7 +145,7 @@ public class NotificationService {
      * */
     @Transactional
     public void deleteAllReadNotifications(Long userId) {
-        notificationRepository.deleteByReceiverIdAndIsReadTrue(userId);
+        notificationRepository.deleteByReceiver_UserIdAndReadTrue(userId);
     }
 
     /**
@@ -158,7 +158,7 @@ public class NotificationService {
      * */
     @Transactional
     public void deleteUnreadNotification(String type, Long referenceId, Long senderId, Long receiverId) {
-        notificationRepository.deleteBySenderIdAndReceiverIdAndTypeAndReferenceIdAndIsReadFalse(
+        notificationRepository.deleteBySender_UserIdAndReceiver_UserIdAndTypeAndReferenceIdAndReadFalse(
                 senderId, receiverId, type, referenceId
         );
     }

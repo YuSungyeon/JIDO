@@ -8,9 +8,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface RoadmapLikeRepository extends JpaRepository<RoadmapLike, Long> {
-    boolean existsByUserIdAndRoadmapId(Long userId, Long roadmapId); // 좋아요 눌렀는지
-    long countByRoadmapId(Long roadmapId); // 좋아요 수
-    void deleteByUserIdAndRoadmapId(Long userId, Long roadmapId); // 좋아요 취소
+    boolean existsByUser_UserIdAndRoadmap_RoadmapId(Long userId, Long roadmapId); // 좋아요 눌렀는지
+    long countByRoadmap_RoadmapId(Long roadmapId); // 좋아요 수
+    void deleteByUser_UserIdAndRoadmap_RoadmapId(Long userId, Long roadmapId); // 좋아요 취소
 
     @Query(value = """
         SELECT r.roadmap_id

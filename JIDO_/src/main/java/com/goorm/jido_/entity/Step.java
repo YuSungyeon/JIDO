@@ -8,7 +8,6 @@ import java.util.List;
 @Entity
 @Table(name = "step")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

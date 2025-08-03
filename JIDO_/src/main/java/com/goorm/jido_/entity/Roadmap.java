@@ -8,7 +8,6 @@ import java.util.List;
 @Entity
 @Table(name = "roadmap")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -30,7 +29,7 @@ public class Roadmap {
     private String category;
 
     @Column(nullable = false)
-    private Boolean is_public = true;
+    private Boolean isPublic = true;
 
     private LocalDateTime created_at;
 

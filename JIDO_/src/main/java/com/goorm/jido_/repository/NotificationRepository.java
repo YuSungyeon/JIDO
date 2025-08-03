@@ -8,16 +8,16 @@ import java.util.List;
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
     // 전체 알림 목록 (최신순 정렬)
-    List<Notification> findByReceiverIdOrderByCreatedAtDesc(Long receiverId);
+    List<Notification> findByReceiver_UserIdOrderByCreatedAtDesc(Long receiverId);
 
     // 안 읽은 알림 목록 (최신순 정렬)
-    List<Notification> findByReceiverIdAndIsReadFalseOrderByCreatedAtDesc(Long receiverId);
+    List<Notification> findByReceiver_UserIdAndReadFalseOrderByCreatedAtDesc(Long receiverId);
 
     // 읽은 알림 전체 삭제
-    void deleteByReceiverIdAndIsReadTrue(Long receiverId);
+    void deleteByReceiver_UserIdAndReadTrue(Long receiverId);
 
     // 알림 취소 (읽지 않았을 경우만)
-    void deleteBySenderIdAndReceiverIdAndTypeAndReferenceIdAndIsReadFalse(
+    void deleteBySender_UserIdAndReceiver_UserIdAndTypeAndReferenceIdAndReadFalse(
             Long senderId, Long receiverId, String type, Long referenceId
     );
 }

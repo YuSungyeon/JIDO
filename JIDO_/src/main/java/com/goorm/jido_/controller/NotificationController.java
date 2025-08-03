@@ -52,7 +52,7 @@ public class NotificationController {
      */
     @DeleteMapping("/read")
     public void deleteReadNotifications(@AuthenticationPrincipal Long userId) {
-
+        notificationService.deleteAllReadNotifications(userId);
     }
 
 }

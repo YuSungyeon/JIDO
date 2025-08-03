@@ -31,7 +31,7 @@ public class CommentLikeService {
      */
     @Transactional
     public void addLike(Long userId, Long commentId) {
-        if (likeRepository.existsByUserIdAndCommentId(userId, commentId)) {
+        if (likeRepository.existsByUser_UserIdAndComment_CommentId(userId, commentId)) {
             throw new IllegalStateException("이미 좋아요한 댓글입니다.");
         }
 
@@ -68,7 +68,7 @@ public class CommentLikeService {
      */
     @Transactional
     public void removeLike(Long userId, Long commentId) {
-        if (!likeRepository.existsByUserIdAndCommentId(userId, commentId)) {
+        if (!likeRepository.existsByUser_UserIdAndComment_CommentId(userId, commentId)) {
             throw new IllegalStateException("좋아요하지 않은 댓글입니다.");
         }
         // 알림 삭제 (읽지 않은 경우만)
@@ -79,7 +79,7 @@ public class CommentLikeService {
                 "comment_like", commentId, userId, comment.getAuthor().getUserId()
         );
 
-        likeRepository.deleteByUserIdAndCommentId(userId, commentId);
+        likeRepository.deleteByUser_UserIdAndComment_CommentId(userId, commentId);
     }
 
     /**
@@ -90,7 +90,7 @@ public class CommentLikeService {
      */
     @Transactional(readOnly = true)
     public long countCommentLikes(Long commentId) {
-        return likeRepository.countByCommentId(commentId);
+        return likeRepository.countByComment_CommentId(commentId);
     }
 
     /**
@@ -98,7 +98,7 @@ public class CommentLikeService {
      */
     @Transactional(readOnly = true)
     public boolean isLiked(Long userId, Long commentId) {
-        return likeRepository.existsByUserIdAndCommentId(userId, commentId);
+        return likeRepository.existsByUser_UserIdAndComment_CommentId(userId, commentId);
     }
 
     /**

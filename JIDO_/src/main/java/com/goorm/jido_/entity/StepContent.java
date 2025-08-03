@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "step_content")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

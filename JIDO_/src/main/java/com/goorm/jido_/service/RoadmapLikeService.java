@@ -30,7 +30,7 @@ public class RoadmapLikeService {
      */
     @Transactional
     public void addLike(Long userId, Long roadmapId) {
-        if (likeRepository.existsByUserIdAndRoadmapId(userId, roadmapId)) {
+        if (likeRepository.existsByUser_UserIdAndRoadmap_RoadmapId(userId, roadmapId)) {
             throw new IllegalStateException("이미 좋아요한 로드맵입니다.");
         }
 
@@ -67,7 +67,7 @@ public class RoadmapLikeService {
      */
     @Transactional
     public void removeLike(Long userId, Long roadmapId) {
-        if (!likeRepository.existsByUserIdAndRoadmapId(userId, roadmapId)) {
+        if (!likeRepository.existsByUser_UserIdAndRoadmap_RoadmapId(userId, roadmapId)) {
             throw new IllegalStateException("좋아요하지 않은 로드맵입니다.");
         }
         // 알림 삭제 (읽지 않은 좋아요 알림만)
@@ -78,7 +78,7 @@ public class RoadmapLikeService {
                 "roadmap_like", roadmapId, userId, roadmap.getAuthor().getUserId()
         );
 
-        likeRepository.deleteByUserIdAndRoadmapId(userId, roadmapId);
+        likeRepository.deleteByUser_UserIdAndRoadmap_RoadmapId(userId, roadmapId);
     }
 
     /**
@@ -89,7 +89,7 @@ public class RoadmapLikeService {
      */
     @Transactional(readOnly = true)
     public boolean isLiked(Long userId, Long roadmapId) {
-        return likeRepository.existsByUserIdAndRoadmapId(userId, roadmapId);
+        return likeRepository.existsByUser_UserIdAndRoadmap_RoadmapId(userId, roadmapId);
     }
 
     /**
@@ -99,7 +99,7 @@ public class RoadmapLikeService {
      */
     @Transactional(readOnly = true)
     public long countLikes(Long roadmapId) {
-        return likeRepository.countByRoadmapId(roadmapId);
+        return likeRepository.countByRoadmap_RoadmapId(roadmapId);
     }
 
     @Transactional(readOnly = true)

@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Getter
-@Setter
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +28,14 @@ public class Notification {
     private Long referenceId;
 
     private String message;
-    private boolean isRead = false;
+
+    @Column(name = "is_read")
+    private boolean read = false;
+
     private LocalDateTime createdAt;
+
+    public void markAsRead() {
+        this.read = true;
+    }
 
 }

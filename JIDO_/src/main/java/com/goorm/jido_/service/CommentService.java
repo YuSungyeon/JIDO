@@ -4,7 +4,6 @@ import com.goorm.jido_.dto.CommentResponse;
 import com.goorm.jido_.entity.Comment;
 import com.goorm.jido_.entity.Roadmap;
 import com.goorm.jido_.entity.User;
-import com.goorm.jido_.repository.CommentLikeRepository;
 import com.goorm.jido_.repository.CommentRepository;
 import com.goorm.jido_.repository.RoadmapRepository;
 import com.goorm.jido_.repository.UserRepository;
@@ -81,8 +80,7 @@ public class CommentService {
             throw new IllegalStateException("댓글 작성자만 수정할 수 있습니다.");
         }
 
-        comment.setContent(newContent);
-        comment.setUpdatedAt(LocalDateTime.now());
+        comment.updateContent(newContent);
 
         commentRepository.save(comment);
     }
@@ -118,7 +116,7 @@ public class CommentService {
      */
     @Transactional(readOnly = true)
     public List<CommentResponse> getCommentsByRoadmap(Long roadmapId, Long userId) {
-        List<Comment> comments = commentRepository.findByRoadmapIdOrderByCreatedAtDesc(roadmapId);
+        List<Comment> comments = commentRepository.findByRoadmap_RoadmapIdOrderByCreatedAtDesc(roadmapId);
 
         return comments.stream()
                 .map(comment -> {
@@ -137,7 +135,7 @@ public class CommentService {
      */
     @Transactional(readOnly = true)
     public List<Comment> getCommentsByUser(Long userId) {
-        return commentRepository.findByAuthorIdOrderByCreatedAtDesc(userId);
+        return commentRepository.findByAuthor_UserIdOrderByCreatedAtDesc(userId);
     }
 
     /**
@@ -148,6 +146,6 @@ public class CommentService {
      */
     @Transactional(readOnly = true)
     public long countComments(Long roadmapId) {
-        return commentRepository.countByRoadmapId(roadmapId);
+        return commentRepository.countByRoadmap_RoadmapId(roadmapId);
     }
 }
