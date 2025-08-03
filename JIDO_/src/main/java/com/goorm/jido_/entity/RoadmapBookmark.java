@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "roadmap_bookmark")
 public class RoadmapBookmark {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

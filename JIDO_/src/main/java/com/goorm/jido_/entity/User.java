@@ -14,9 +14,9 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Table(name = "user")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "user")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,13 +39,16 @@ public class User implements UserDetails {
     private Integer age;
 
 
-    // created_at 열이 "DEFAULT CURRENT_TIMESTAMP" 이므로, 아래와 같이 설정
-    // insertable = false -> 	JPA가 insert 시 이 컬럼 값을 쿼리에 포함하지 않음
-    // updatable = false -> JPA가 update 시 이 컬럼 값을 건드리지 않음
-    @Column(name = "created_at", nullable = false, insertable = false, updatable = false)
-    private LocalDateTime createdAt; // 가입 일시
+//    // created_at 열이 "DEFAULT CURRENT_TIMESTAMP" 이므로, 아래와 같이 설정
+//    // insertable = false -> 	JPA가 insert 시 이 컬럼 값을 쿼리에 포함하지 않음
+//    // updatable = false -> JPA가 update 시 이 컬럼 값을 건드리지 않음
+//    @Column(name = "created_at", nullable = false, insertable = false, updatable = false)
+//    private LocalDateTime createdAt; // 가입 일시
 
-    @Column(name = "updated_at", insertable = false)
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at", insertable = false, nullable = true)
     private LocalDateTime updatedAt; // 정보 수정일시
 
     @Builder

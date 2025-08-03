@@ -6,11 +6,11 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Table(name = "roadmap_section")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "roadmap_section")
 public class RoadmapSection {
 
     // 섹션 ID (PK)

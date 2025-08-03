@@ -3,7 +3,7 @@ spring:
     name: JIDO_
 
   datasource:
-    url: jdbc:mysql://localhost:3306/LOADMAP_PROGRAM
+    url: jdbc:mysql://localhost:3306/ROADMAP_PROGRAM
     username: root
     password: 980122
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -12,17 +12,21 @@ spring:
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl # Hibernate가 @Table(name = "...")를 그대로 사용
-      ddl-auto: create
+      ddl-auto: create-drop # 앱 실행시 테이블 생성, 앱 종료시 테이블 삭제
 
     show-sql: true
 
     properties:
       hibernate:
         format_sql: true
+    defer-datasource-initialization: true
 
   server:
     port: 8080
 
-
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:data.sql # 앱 실행 시, 초기 삽입 데이터
 
 
