@@ -20,7 +20,7 @@ public class Step {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "section_id", nullable = false)
-    private RoadmapSection RoadmapSection; // 소속 섹션
+    private RoadmapSection roadmapSection; // 소속 섹션
 
     @Column(name = "title", nullable = false)
     private String title; // 스텝 제목

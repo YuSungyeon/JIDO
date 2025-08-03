@@ -32,6 +32,6 @@ public class RoadmapSection {
     private Long sectionNum;
 
     // 해당 섹션에 포함된 Step 리스트
-    @OneToMany(mappedBy = "RoadmapSection")
+    @OneToMany(mappedBy = "roadmapSection")
     private List<Step> steps;
 }
