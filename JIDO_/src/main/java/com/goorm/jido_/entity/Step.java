@@ -27,10 +27,10 @@ public class Step {
     @Column(name = "step_number", nullable = false)
     private Long stepNumber; // 스텝 순서
 
-    @Column(name = "created_at", nullable = false, insertable = false, updatable = false)
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", insertable = false)
+    @Column(name = "updated_at", insertable = false, nullable = true)
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "step", cascade = CascadeType.ALL)

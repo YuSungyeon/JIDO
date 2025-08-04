@@ -32,10 +32,10 @@ public class Roadmap {
     @Column(name = "is_public", nullable = false)
     private Boolean isPublic = true; // 공개 여부 (기본값 true)
 
-    @Column(name = "created_at", nullable = false, updatable = false, insertable = false)
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt; // 생성 일시
 
-    @Column(name = "updated_at", insertable = false)
+    @Column(name = "updated_at", insertable = false, nullable = true)
     private LocalDateTime updatedAt; // 수정 일시
 
     @OneToMany(mappedBy = "sectionId", cascade = CascadeType.ALL)
