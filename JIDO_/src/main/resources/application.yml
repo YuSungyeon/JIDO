@@ -3,10 +3,10 @@ spring:
     name: JIDO_
 
   datasource:
-#    url: jdbc:mysql://localhost:3306/ROADMAP_PROGRAM
+    url: jdbc:mysql://localhost:3306/ROADMAP_PROGRAM
     #url: jdbc:mysql://127.0.0.1:3306/roadmap_db?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
-#    password: 980122
+    password: dbtjddus12
     driver-class-name: com.mysql.cj.jdbc.Driver
     #password: root1234
 

@@ -27,17 +27,17 @@ public class UserService {
   public Long save(SignupRequestDto dto) {
     // 1. 유저 정보 저장
     User saved =  userRepository.save(User.builder()
-            .userLoginId(dto.getUserLoginId())
-            .password(bCryptPasswordEncoder.encode(dto.getPassword()))
-            .email(dto.getEmail())
-            .nickname(dto.getNickName())
-            .age(dto.getAge())
+            .userLoginId(dto.userLoginId())
+            .password(bCryptPasswordEncoder.encode(dto.password()))
+            .email(dto.email())
+            .nickname(dto.nickName())
+            .age(dto.age())
             .build()
     );
 
 
     // 2. 유저 관심 카테고리 저장
-    for (String category : dto.getCategories()){
+    for (String category : dto.categories()){
       System.out.println(category);
       userInterestRepository.save(UserInterest.builder()
               .user(saved)
