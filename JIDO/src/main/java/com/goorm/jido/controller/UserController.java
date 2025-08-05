@@ -32,7 +32,7 @@ public class UserController {
     try{
       User user = userService.findByNickname(nickname);
       return ResponseEntity.status(HttpStatus.OK)
-              .body(new UserResponseDto(user));
+              .body(UserResponseDto.from(user));
 
     }catch (IllegalArgumentException e){
       return ResponseEntity.notFound().build();

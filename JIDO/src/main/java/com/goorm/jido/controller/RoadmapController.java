@@ -1,9 +1,10 @@
 package com.goorm.jido.controller;
 
 import com.goorm.jido.dto.RoadmapRequestDto;
-import com.goorm.jido.entity.Roadmap;
+import com.goorm.jido.dto.RoadmapResponseDto;
 import com.goorm.jido.service.RoadmapService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,20 +17,21 @@ public class RoadmapController {
 
     // 로드맵 생성
     @PostMapping
-    public Roadmap create(@RequestBody RoadmapRequestDto dto) {
-        return roadmapService.saveRoadmap(dto);
+    public RoadmapResponseDto create(@RequestBody RoadmapRequestDto dto, @AuthenticationPrincipal Long userId) {
+        return roadmapService.saveRoadmap(dto, userId);
     }
 
     // 특정 로드맵 조회
     @GetMapping("/{id}")
-    public Roadmap get(@PathVariable Long id) {
-        return roadmapService.getRoadmap(id).orElse(null);
+    public RoadmapResponseDto get(@PathVariable Long id, @AuthenticationPrincipal Long userId) {
+        return roadmapService.getRoadmap(id, userId)
+                .orElseThrow(() -> new IllegalArgumentException("로드맵을 찾을 수 없습니다."));
     }
 
     // 전체 로드맵 조회
     @GetMapping
-    public List<Roadmap> getAll() {
-        return roadmapService.getAllRoadmaps();
+    public List<RoadmapResponseDto> getAll(@AuthenticationPrincipal Long userId) {
+        return roadmapService.getAllRoadmaps(userId);
     }
 
     // 로드맵 삭제
