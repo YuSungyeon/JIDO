@@ -5,8 +5,9 @@ plugins {
 }
 
 springBoot {
-    mainClass = 'com.goorm.jido_.JidoApplication'
+    mainClass = 'com.goorm.jido.JidoApplication'
 }
+
 
 group = 'com.goorm'
 version = '0.0.1-SNAPSHOT'

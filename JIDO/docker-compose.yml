@@ -6,7 +6,7 @@ services:
     container_name: jido-mysql
     environment:
       MYSQL_DATABASE: ROADMAP_PROGRAM
-      MYSQL_ROOT_PASSWORD: root1234
+      MYSQL_ROOT_PASSWORD: dbtjddus12
     ports:
       - "3306:3306"
     volumes:
@@ -27,7 +27,7 @@ services:
     environment:
       DB_URL: jdbc:mysql://jido-mysql:3306/ROADMAP_PROGRAM?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
       DB_USERNAME: root
-      DB_PASSWORD: root1234
+      DB_PASSWORD: dbtjddus12
     networks:
       - jido-network
 
