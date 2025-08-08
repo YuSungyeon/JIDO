@@ -21,12 +21,13 @@ public class RoadmapService {
         User author = userRepository.findById(dto.getAuthorId())
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
-        Roadmap roadmap = new Roadmap();
-        roadmap.setAuthor(author);
-        roadmap.setTitle(dto.getTitle());
-        roadmap.setDescription(dto.getDescription());
-        roadmap.setCategory(dto.getCategory());
-        roadmap.setIsPublic(dto.getIsPublic());
+        Roadmap roadmap = Roadmap.builder()
+                .author(author)
+                .title(dto.getTitle())
+                .description(dto.getDescription())
+                .category(dto.getCategory())
+                .isPublic(dto.getIsPublic())
+                .build();
 
         return roadmapRepository.save(roadmap);
     }
@@ -37,6 +38,10 @@ public class RoadmapService {
 
     public List<Roadmap> getAllRoadmaps() {
         return roadmapRepository.findAll();
+    }
+
+    public List<Roadmap> getMyRoadmaps(User user) {
+        return roadmapRepository.findByAuthor_UserId(user.getUserId());
     }
 
     public void deleteRoadmap(Long id) {

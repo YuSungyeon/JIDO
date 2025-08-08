@@ -4,11 +4,13 @@ spring:
 
   datasource:
     # url: jdbc:mysql://localhost:3306/ROADMAP_PROGRAM
-    url: jdbc:mysql://127.0.0.1:3306/roadmap_db?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    # url: jdbc:mysql://127.0.0.1:3306/roadmap_db?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/roadmap_db?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
     # password: 980122
+    password: whgkdms0506
     driver-class-name: com.mysql.cj.jdbc.Driver
-    password: root1234
+    # password: root1234
 
   jpa:
     hibernate:
