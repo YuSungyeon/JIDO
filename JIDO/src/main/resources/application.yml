@@ -51,7 +51,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    # 아래 줄은 삭제(자동 선택됨, 경고 방지)
+    # database-platform: org.hibernate.dialect.MySQL8Dialect
 
   profiles:
     active: docker

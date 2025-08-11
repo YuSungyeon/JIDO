@@ -7,10 +7,18 @@ services:
     environment:
       MYSQL_DATABASE: ROADMAP_PROGRAM
       MYSQL_ROOT_PASSWORD: dbtjddus12
+      MYSQL_ROOT_HOST: "%"        # ← 추가 (root로 컨테이너 간 접속 허용)
+      TZ: Asia/Seoul              # 선택
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    healthcheck:                  # ← 추가 (DB 준비될 때까지 대기)
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pdbtjddus12"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
     networks:
       - jido-network
 
@@ -21,15 +29,17 @@ services:
     image: jido-app:latest
     container_name: jido-app
     depends_on:
-      - db
+      db:
+        condition: service_healthy   # ← DB가 healthy일 때만 앱 기동
     ports:
       - "8080:8080"
     environment:
-      DB_URL: jdbc:mysql://jido-mysql:3306/ROADMAP_PROGRAM?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+      DB_URL: jdbc:mysql://db:3306/ROADMAP_PROGRAM?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
       DB_USERNAME: root
       DB_PASSWORD: dbtjddus12
       SERVER_PORT: 8080
-
+      TZ: Asia/Seoul
+    restart: unless-stopped
     networks:
       - jido-network
 
