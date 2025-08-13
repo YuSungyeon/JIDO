@@ -1,4 +1,4 @@
-package com.goorm.jido.security_config;
+package com.goorm.jido.config;
 
 
 import com.goorm.jido.service.UserDetailService;

@@ -4,7 +4,7 @@ import com.goorm.jido.dto.SignupRequestDto;
 import com.goorm.jido.dto.SignupResponseDto;
 import com.goorm.jido.dto.UserResponseDto;
 import com.goorm.jido.entity.User;
-import com.goorm.jido.security_config.CustomLogoutSuccessHandler;
+import com.goorm.jido.config.CustomLogoutSuccessHandler;
 import com.goorm.jido.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

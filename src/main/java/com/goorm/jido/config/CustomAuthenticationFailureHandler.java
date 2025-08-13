@@ -1,4 +1,4 @@
-package com.goorm.jido.security_config;
+package com.goorm.jido.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;

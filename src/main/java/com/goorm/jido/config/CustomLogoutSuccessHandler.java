@@ -1,4 +1,4 @@
-package com.goorm.jido.security_config;
+package com.goorm.jido.config;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
