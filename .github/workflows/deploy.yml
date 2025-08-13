@@ -3,7 +3,7 @@ name: Deploy jido-backend-project
 on:
   push:
     branches:
-      - main
+      - deploy
 
 jobs:
   deploy:

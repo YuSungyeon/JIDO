@@ -1,4 +1,4 @@
-version: "3.8"
+#version: "3.8"
 
 services:
   db:
@@ -6,7 +6,7 @@ services:
     container_name: jido-mysql
     environment:
       MYSQL_DATABASE: ROADMAP_PROGRAM
-      MYSQL_ROOT_PASSWORD: dbtjddus12
+      MYSQL_ROOT_PASSWORD: 980122
       MYSQL_ROOT_HOST: "%"
       TZ: Asia/Seoul
     ports:
@@ -15,11 +15,13 @@ services:
       - mysql_data:/var/lib/mysql
       - /etc/mysql/conf.d:/etc/mysql/conf.d:ro
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pdbtjddus12"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p980122"]
       interval: 5s
       timeout: 3s
       retries: 30
+
     restart: unless-stopped
+
     networks:
       - jido-network
 
@@ -27,6 +29,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+
     image: jido-app:latest
     container_name: jido-app
     depends_on:
@@ -34,13 +37,10 @@ services:
         condition: service_healthy
     ports:
       - "8080:8080"
-    environment:
-      DB_URL: jdbc:mysql://db:3306/ROADMAP_PROGRAM?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=UTF-8
-      DB_USERNAME: root
-      DB_PASSWORD: dbtjddus12
-      SERVER_PORT: 8080
-      TZ: Asia/Seoul
+
+
     restart: unless-stopped
+
     networks:
       - jido-network
 
