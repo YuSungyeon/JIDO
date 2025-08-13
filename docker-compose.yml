@@ -6,7 +6,8 @@ services:
     container_name: jido-mysql
     environment:
       MYSQL_DATABASE: ROADMAP_PROGRAM
-      MYSQL_ROOT_PASSWORD: 980122
+      # MYSQL_ROOT_PASSWORD: 980122
+      MYSQL_ROOT_PASSWORD: dbtjddus12
       MYSQL_ROOT_HOST: "%"
       TZ: Asia/Seoul
     ports:
