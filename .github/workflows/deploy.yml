@@ -30,6 +30,17 @@ jobs:
         run: |
           echo "${{ secrets.ENV_FILE_CONTENT }}" > .env
 
+      - name: Debug EC2 variables
+        run: |
+          echo "EC2_HOST: ${EC2_HOST:0:5}*****"
+          echo "EC2_USER: ${EC2_USER}"
+          echo "EC2_KEY length: $(echo "$EC2_KEY" | wc -c)"
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+          EC2_KEY: ${{ secrets.EC2_KEY }}
+
+
       # ✅ 그 다음 .env 포함해서 전체를 EC2로 전송
       - name: Copy project to EC2 (including .env)
         uses: appleboy/scp-action@v0.1.4
