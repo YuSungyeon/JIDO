@@ -16,7 +16,8 @@ services:
       - mysql_data:/var/lib/mysql
       - /etc/mysql/conf.d:/etc/mysql/conf.d:ro
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p980122"]
+      #test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p980122"]
+      test: [ "CMD-SHELL", "mysqladmin ping -h localhost -p$${MYSQL_ROOT_PASSWORD} --silent" ]
       interval: 5s
       timeout: 3s
       retries: 30
@@ -39,11 +40,18 @@ services:
     ports:
       - "8080:8080"
 
-
+    #--------
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://jido-mysql:3306/ROADMAP_PROGRAM?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: dbtjddus12
+    #----------
     restart: unless-stopped
 
     networks:
       - jido-network
+
 
 volumes:
   mysql_data:
