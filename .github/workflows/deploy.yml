@@ -26,9 +26,6 @@ jobs:
         run: ./gradlew clean build -x test
 
       # ✅ .env 파일을 먼저 생성한다
-      - name: Create .env file from single GitHub Secret
-        run: |
-          echo "${{ secrets.ENV_FILE_CONTENT }}" > .env
 
       - name: Debug EC2 variables
         run: |
@@ -42,7 +39,7 @@ jobs:
 
 
       # ✅ 그 다음 .env 포함해서 전체를 EC2로 전송
-      - name: Copy project to EC2 (including .env)
+      - name: Copy project to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -60,4 +57,4 @@ jobs:
           script: |
             cd JIDO
             docker compose down || true
-            docker compose --env-file .env up -d --build
+            docker compose up -d --build
