@@ -42,6 +42,11 @@ spring:
     url: ${SPRING_DATASOURCE_URL}
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
+
+    # 로컬로 돌릴때 설정
+#    url: jdbc:mysql://localhost:3306/ROADMAP_PROGRAM?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+#    username: root
+#    password: 980122
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
