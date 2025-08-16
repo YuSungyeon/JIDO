@@ -1,8 +1,6 @@
 package com.goorm.jido.controller;
 
-import com.goorm.jido.dto.SignupRequestDto;
-import com.goorm.jido.dto.SignupResponseDto;
-import com.goorm.jido.dto.UserResponseDto;
+import com.goorm.jido.dto.*;
 import com.goorm.jido.entity.User;
 import com.goorm.jido.config.CustomLogoutSuccessHandler;
 import com.goorm.jido.service.UserService;
@@ -12,6 +10,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +26,8 @@ public class UserController {
 
   private final UserService userService;
   private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
+
+  private final AuthenticationManager authenticationManager;
 
 
   // 사용자 조회 (유저 찾기)
@@ -38,14 +42,6 @@ public class UserController {
       return ResponseEntity.notFound().build();
     }
   }
-
-  // 스크랩 조회 (로드맵 즐겨찾기 기능)
-
-
-  // 개인 활동 조회
-
-
-
 
   // 회원 가입
   @PostMapping("/user")
@@ -72,4 +68,39 @@ public class UserController {
     // 3. 로그아웃 핸들러 호출
     customLogoutSuccessHandler.onLogoutSuccess(request, response, authentication);
   }
+
+
+  // 로그인
+  @PostMapping("/api/login")
+  public LoginResponse login(@RequestBody LoginRequest loginRequest){
+    try{
+
+      Authentication auth = authenticationManager.authenticate(
+              new UsernamePasswordAuthenticationToken(
+                      loginRequest.getUsername(),
+                      loginRequest.getPassword()
+              )
+      );
+
+
+      User user = (User)auth.getPrincipal();
+
+      // 인증 성공
+      return LoginResponse.builder()
+              .message("login successful")
+              .id(user.getUserId())
+              .build();
+
+    }catch (AuthenticationException e){
+      // 인증 실패
+      return LoginResponse.builder()
+              .message("login failed")
+              .id(null)
+              .build();
+    }
+  }
+
+
+
+
 }

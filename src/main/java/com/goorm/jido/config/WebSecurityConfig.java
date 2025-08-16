@@ -36,28 +36,19 @@ public class WebSecurityConfig {
                                          CustomAuthenticationFailureHandler failureHandler
                                          ) throws Exception {
     return http
-//            .authorizeHttpRequests(auth -> auth // 인증, 인가 설정
-//                    .requestMatchers(
-//                            "/swagger-ui/**",      // UI 정적 파일
-//                            "/v3/api-docs/**",     // 문서 JSON
-//                            "/swagger-ui.html"     // 경로 리다이렉트용
-//                    ).permitAll()
-//                    .requestMatchers("/login", "/signup", "/user").permitAll()
-//                    .anyRequest().authenticated())
+            // 모든 페이지 시큐리티 해제
+             .authorizeHttpRequests(auth -> auth
+                      .anyRequest().permitAll()
+             )
+//            .formLogin(formLogin -> formLogin // 폼 기반 로그인 설정
+//                    // 로그인 페이지 설정 X -> Spring Security 기본 제공 로그인 페이지(/login)
+//                    // "/login" 에서 로그인 시, POST "/api/login" 으로 전송
+//
+//                    .loginProcessingUrl("/api/login") // 사용 시, "/api/login"으로 폼 데이터 전송(username, password)
+//                    .successHandler(successHandler)
+//                    .failureHandler(failureHandler)
+//            )
 
-                    // 모든 페이지 시큐리티 해제
-                    .authorizeHttpRequests(auth -> auth
-                            .anyRequest().permitAll()
-                    )
-
-            .formLogin(formLogin -> formLogin // 폼 기반 로그인 설정
-                    // 로그인 페이지 설정 X -> Spring Security 기본 제공 로그인 페이지(/login)
-                    // "/login" 에서 로그인 시, POST "/api/login" 으로 전송
-
-                    .loginProcessingUrl("/api/login") // 사용 시, "/api/login"으로 폼 데이터 전송(username, password)
-                    .successHandler(successHandler)
-                    .failureHandler(failureHandler)
-            )
             .logout(logout -> logout
                     .logoutUrl("/none") // 시큐리티 기본 로그아웃 비활성화
             )
@@ -69,9 +60,7 @@ public class WebSecurityConfig {
 
   // 3. 인증 관리자 관련 설정
   @Bean
-  public AuthenticationManager authenticationManagerBean(HttpSecurity http,
-                                                         BCryptPasswordEncoder bCryptPasswordEncoder,
-                                                         UserDetailService userDetailService) throws Exception {
+  public AuthenticationManager authenticationManagerBean(BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
 
     DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
     authProvider.setUserDetailsService(userService); // 사용자 정보 서비스 설정
