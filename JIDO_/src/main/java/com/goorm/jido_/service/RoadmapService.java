@@ -17,7 +17,7 @@ public class RoadmapService {
     private final RoadmapRepository roadmapRepository;
     private final UserRepository userRepository;
 
-    public Roadmap saveRoadmap(RoadmapRequestDto dto) {
+    public Roadmap saveRoadmap(RoadmapRequestDto dto, Long userId) {
         User author = userRepository.findById(dto.getAuthorId())
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 

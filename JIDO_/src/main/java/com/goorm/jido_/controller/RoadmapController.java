@@ -24,8 +24,9 @@ public class RoadmapController {
 
     // 로드맵 생성
     @PostMapping
-    public Roadmap create(@RequestBody RoadmapRequestDto dto) {
-        return roadmapService.saveRoadmap(dto);
+    public Roadmap create(@RequestBody RoadmapRequestDto dto,
+                          @AuthenticationPrincipal User user) {
+        return roadmapService.saveRoadmap(dto, user.getUserId());
     }
 
     // 특정 로드맵 조회
