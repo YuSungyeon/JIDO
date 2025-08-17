@@ -30,13 +30,11 @@ public class RoadmapController {
     // 로드맵 생성
     @PostMapping(consumes = "application/json", produces = "application/json")
     public Roadmap create(@RequestBody RoadmapRequestDto dto,
-                          @AuthenticationPrincipal(expression = "userId") Long userId) {
-        if (userId == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다");
-        }
-        log.info("POST /roadmaps userId={} dto={}", userId, dto);
-        return roadmapService.saveRoadmap(dto, userId);
+                          @AuthenticationPrincipal User user) {
+        if (user == null) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다");
+        return roadmapService.saveRoadmap(dto, user.getUserId());
     }
+
 
     // 특정 로드맵 조회
     @GetMapping("/{id}")

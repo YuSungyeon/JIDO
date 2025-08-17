@@ -1,0 +1,75 @@
+#spring:
+#  application:
+#    name: JIDO_
+#
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/ROADMAP_PROGRAM
+#    #url: jdbc:mysql://127.0.0.1:3306/roadmap_db?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+#    username: root
+#    password: 980122
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+##    password: root1234
+#
+#  jpa:
+#    hibernate:
+##      naming:
+##        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl # Hibernate가 @Table(name = "...")를 그대로 사용
+#      ddl-auto: create-drop # 앱 실행시 테이블 생성, 앱 종료시 테이블 삭제
+#
+#    show-sql: true
+#
+#    properties:
+#      hibernate:
+#        format_sql: true
+#    defer-datasource-initialization: true
+#
+#  server:
+#    port: 8080
+#
+#  sql:
+#    init:
+#      mode: always
+#      data-locations: classpath:data.sql # 앱 실행 시, 초기 삽입 데이터
+#
+#
+
+
+spring:
+  application:
+    name: jido-docker
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+
+    # 로컬로 돌릴때 설정
+#    url: jdbc:mysql://localhost:3306/ROADMAP_PROGRAM?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+#    username: root
+#    password: 980122
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    # JPA(ddl-auto)가 실행된 후 data.sql을 실행하도록 순서를 보장
+    defer-datasource-initialization: true
+
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    # 아래 줄은 삭제(자동 선택됨, 경고 방지)
+    # database-platform: org.hibernate.dialect.MySQL8Dialect
+
+  profiles:
+    active: docker
+
+#  sql:
+#      init:
+#        mode: always
+#        data-locations: classpath:data.sql # 앱 실행 시, 초기 삽입 데이터
+
+server:
+  address: 0.0.0.0  # 모든 IP 주소에서 접속 허용
+  port: ${SERVER_PORT:8080}  # 환경변수 SERVER_PORT가 있으면 그 포트, 없으면 8080 포트 사용

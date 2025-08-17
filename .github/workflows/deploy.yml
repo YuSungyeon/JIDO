@@ -1,0 +1,60 @@
+name: Deploy jido-backend-project
+
+on:
+  push:
+    branches:
+      - deploy
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Grant execute permission for Gradle
+        run: chmod +x ./gradlew
+
+      - name: Build Spring Boot JAR
+        run: ./gradlew clean build -x test
+
+      # ✅ .env 파일을 먼저 생성한다
+
+      - name: Debug EC2 variables
+        run: |
+          echo "EC2_HOST: ${EC2_HOST:0:5}*****"
+          echo "EC2_USER: ${EC2_USER}"
+          echo "EC2_KEY length: $(echo "$EC2_KEY" | wc -c)"
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+          EC2_KEY: ${{ secrets.EC2_KEY }}
+
+
+      # ✅ 그 다음 .env 포함해서 전체를 EC2로 전송
+      - name: Copy project to EC2
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          source: "."
+          target: "/home/${{ secrets.EC2_USER }}/JIDO"
+
+      - name: SSH into EC2 and run Docker Compose
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            cd JIDO
+            docker compose down || true
+            docker compose up -d --build

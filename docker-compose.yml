@@ -1,0 +1,55 @@
+#version: "3.8"
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: jido-mysql
+
+    environment:
+      MYSQL_DATABASE: ROADMAP_PROGRAM
+      MYSQL_ROOT_PASSWORD: dbtjddus12
+      MYSQL_ROOT_HOST: "%"
+      TZ: Asia/Seoul
+
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+    networks:
+      - jido-network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: jido-app:latest
+    container_name: jido-app
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+
+    environment: # application.yml에 환경 변수로 전달
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/ROADMAP_PROGRAM?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: dbtjddus12
+      SPRING_DATASOURCE_HIKARI_INITIALIZATIONFAILTIMEOUT: "-1"
+
+    restart: unless-stopped
+    networks:
+      - jido-network
+
+volumes:
+  mysql_data:
+
+networks:
+  jido-network:
+    driver: bridge
