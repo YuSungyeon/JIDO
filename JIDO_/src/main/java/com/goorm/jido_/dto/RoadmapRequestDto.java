@@ -21,6 +21,8 @@ public class RoadmapRequestDto {
     private String category;
 
     private Boolean isPublic;
-
     // created_at, updated_at은 자동 생성되므로 입력받지 않음
+    public Long getUserId() {
+        return authorId; // authorId를 userId처럼 사용하도록 매핑
+    }
 }
