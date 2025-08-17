@@ -24,6 +24,11 @@ public class UserService {
             .orElseThrow(() -> new IllegalArgumentException());
   }
 
+  public User findById(Long id) { // User.Id로 검색
+    return userRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException());
+  }
+
   public Long save(SignupRequestDto dto) {
     // 1. 유저 정보 저장
     User saved =  userRepository.save(User.builder()
