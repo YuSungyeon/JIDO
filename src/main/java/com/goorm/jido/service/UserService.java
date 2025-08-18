@@ -1,5 +1,6 @@
 package com.goorm.jido.service;
 import com.goorm.jido.dto.SignupRequestDto;
+import com.goorm.jido.dto.UserPatchRequestDto;
 import com.goorm.jido.entity.User;
 import com.goorm.jido.entity.userInterest.UserInterest;
 import com.goorm.jido.repository.CategoryRepository;
@@ -8,6 +9,7 @@ import com.goorm.jido.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -52,6 +54,32 @@ public class UserService {
     }
 
     return  saved.getUserId();
+  }
 
+
+  @Transactional
+  // 유저 정보 업데이트
+  public User patchUser(Long id, UserPatchRequestDto dto) {
+    User user = userRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+    if (dto.getUserLoginId() != null) {
+      user.setUserLoginId(dto.getUserLoginId());
+    }
+    if (dto.getEmail() != null) {
+      user.setEmail(dto.getEmail());
+    }
+    if (dto.getNickname() != null) {
+      user.setNickname(dto.getNickname());
+    }
+    if (dto.getPassword() != null) {
+      user.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
+    }
+    if (dto.getAge() != null) {
+      user.setAge(dto.getAge());
+    }
+
+//    return userRepository.save(user);
+    return user;
   }
 }
