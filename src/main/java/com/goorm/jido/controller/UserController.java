@@ -29,6 +29,13 @@ public class UserController {
 
   private final AuthenticationManager authenticationManager;
 
+  // 사용자 정보 수정
+  @PatchMapping("/user/{id}")
+  public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserPatchRequestDto dto) {
+    return ResponseEntity.status(HttpStatus.OK)
+            .body(userService.patchUser(id, dto));
+  }
+
 
   // 사용자 조회 (유저 찾기)
   @GetMapping("/user/{id}")
