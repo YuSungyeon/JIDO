@@ -2,6 +2,9 @@ package com.goorm.jido.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,9 +30,11 @@ public class Step {
     @Column(name = "step_number", nullable = false)
     private Long stepNumber; // 스텝 순서
 
+    @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
     @Column(name = "updated_at", insertable = false, nullable = true)
     private LocalDateTime updatedAt;
 

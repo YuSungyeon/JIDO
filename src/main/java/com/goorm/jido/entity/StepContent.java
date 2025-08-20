@@ -2,6 +2,9 @@ package com.goorm.jido.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,9 +25,11 @@ public class StepContent {
     @Column(columnDefinition = "TEXT", name = "content", nullable = false)
     private String content;
 
+    @CreationTimestamp
     @Column(name = "created_at", nullable = false, insertable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
     @Column(name = "updated_at", insertable = false)
     private LocalDateTime updatedAt;
 
