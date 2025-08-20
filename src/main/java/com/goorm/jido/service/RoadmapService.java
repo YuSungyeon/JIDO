@@ -1,9 +1,9 @@
 package com.goorm.jido.service;
 
-import com.goorm.jido.domain.entity.Roadmap;
-import com.goorm.jido.domain.entity.User;
-import com.goorm.jido.domain.repository.RoadmapRepository;
-import com.goorm.jido.domain.repository.UserRepository;
+import com.goorm.jido.entity.Roadmap;
+import com.goorm.jido.entity.User;
+import com.goorm.jido.repository.RoadmapRepository;
+import com.goorm.jido.repository.UserRepository;
 import com.goorm.jido.dto.RoadmapRequestDto;
 import com.goorm.jido.dto.RoadmapResponseDto;
 import lombok.RequiredArgsConstructor;
