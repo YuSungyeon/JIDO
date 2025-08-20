@@ -52,7 +52,7 @@ public class UserController {
 
   // 회원 가입
   @PostMapping("/user")
-  public ResponseEntity<SignupResponseDto> signUp(SignupRequestDto request){
+  public ResponseEntity<SignupResponseDto> signUp(@RequestBody SignupRequestDto request){
 
     SignupResponseDto signupResponseDto = new SignupResponseDto(
             userService.save(request), // userId

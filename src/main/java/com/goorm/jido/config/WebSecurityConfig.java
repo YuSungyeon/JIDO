@@ -40,14 +40,14 @@ public class WebSecurityConfig {
              .authorizeHttpRequests(auth -> auth
                       .anyRequest().permitAll()
              )
-//            .formLogin(formLogin -> formLogin // 폼 기반 로그인 설정
+            .formLogin(formLogin -> formLogin // 폼 기반 로그인 설정
 //                    // 로그인 페이지 설정 X -> Spring Security 기본 제공 로그인 페이지(/login)
 //                    // "/login" 에서 로그인 시, POST "/api/login" 으로 전송
 //
-//                    .loginProcessingUrl("/api/login") // 사용 시, "/api/login"으로 폼 데이터 전송(username, password)
-//                    .successHandler(successHandler)
-//                    .failureHandler(failureHandler)
-//            )
+                    .loginProcessingUrl("/api/login") // 사용 시, "/api/login"으로 폼 데이터 전송(username, password)
+                    .successHandler(successHandler)
+                    .failureHandler(failureHandler)
+            )
 
             .logout(logout -> logout
                     .logoutUrl("/none") // 시큐리티 기본 로그아웃 비활성화
