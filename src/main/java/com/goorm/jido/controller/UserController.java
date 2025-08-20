@@ -29,12 +29,19 @@ public class UserController {
 
   private final AuthenticationManager authenticationManager;
 
+  // 사용자 정보 수정
+  @PatchMapping("/user/{id}")
+  public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserPatchRequestDto dto) {
+    return ResponseEntity.status(HttpStatus.OK)
+            .body(userService.patchUser(id, dto));
+  }
+
 
   // 사용자 조회 (유저 찾기)
-  @GetMapping("/user/{nickname}")
-  public ResponseEntity<UserResponseDto> findBynickname(@PathVariable String nickname) {
+  @GetMapping("/user/{id}")
+  public ResponseEntity<UserResponseDto> findById(@PathVariable Long id) {
     try{
-      User user = userService.findByNickname(nickname);
+      User user = userService.findById(id);
       return ResponseEntity.status(HttpStatus.OK)
               .body(UserResponseDto.from(user));
 

@@ -1,7 +1,12 @@
 package com.goorm.jido.entity;
+
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -11,12 +16,13 @@ import java.util.List;
 @Builder
 @Table(name = "roadmap")
 public class Roadmap {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "roadmap_id")
     private Long roadmapId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
@@ -27,17 +33,21 @@ public class Roadmap {
     private String description;
 
     @Column(name = "category", nullable = false)
-    private String category; // 카테고리
+    private String category;
 
+    @Builder.Default
     @Column(name = "is_public", nullable = false)
-    private Boolean isPublic = true; // 공개 여부 (기본값 true)
+    private Boolean isPublic = true;
 
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt; // 생성 일시
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", insertable = false, nullable = true)
-    private LocalDateTime updatedAt; // 수정 일시
+    @UpdateTimestamp
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "sectionId", cascade = CascadeType.ALL)
-    private List<RoadmapSection> RoadmapSections; // 로드맵에 속한 로드맵 섹션 리스트
+    @Builder.Default
+    @OneToMany(mappedBy = "roadmap", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RoadmapSection> roadmapSections = new ArrayList<>();
 }
