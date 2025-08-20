@@ -52,7 +52,7 @@ public class UserController {
 
   // 회원 가입
   @PostMapping("/user")
-  public ResponseEntity<SignupResponseDto> signUp(@RequestBody SignupRequestDto request){
+  public ResponseEntity<SignupResponseDto> signUp(SignupRequestDto request){
 
     SignupResponseDto signupResponseDto = new SignupResponseDto(
             userService.save(request), // userId
@@ -79,7 +79,7 @@ public class UserController {
 
   // 로그인
   @PostMapping("/api/login")
-  public LoginResponse login(@RequestBody LoginRequest loginRequest){
+  public LoginResponse login(@ModelAttribute LoginRequest loginRequest){
     try{
 
       Authentication auth = authenticationManager.authenticate(
