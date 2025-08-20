@@ -1,5 +1,6 @@
 package com.goorm.jido.controller;
 
+import com.goorm.jido.config.CustomUserDetails;
 import com.goorm.jido.dto.RoadmapRequestDto;
 import com.goorm.jido.dto.RoadmapResponseDto;
 import com.goorm.jido.service.RoadmapService;
@@ -22,12 +23,9 @@ public class RoadmapController {
     @PostMapping
     public RoadmapResponseDto create(
             @RequestBody RoadmapRequestDto dto,
-            @AuthenticationPrincipal(expression = "userId") Long userId   // ✅ Principal에서 userId 바로 추출
+            @AuthenticationPrincipal CustomUserDetails userDetails  // ✅ CustomUserDetails 전체 주입
     ) {
-        // 로그인 정보가 없으면 body의 authorId로 대체 허용(프론트 테스트 대비)
-        if (userId == null) {
-            userId = dto.authorId();
-        }
+        Long userId = userDetails != null ? userDetails.getUserId() : dto.authorId();
         if (userId == null) {
             throw new IllegalArgumentException("authorId 또는 로그인 정보가 필요합니다.");
         }
@@ -40,8 +38,9 @@ public class RoadmapController {
     @GetMapping("/{id}")
     public RoadmapResponseDto get(
             @PathVariable Long id,
-            @AuthenticationPrincipal(expression = "userId") Long userId   // ✅ 동일 처리
+            @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
+        Long userId = userDetails != null ? userDetails.getUserId() : null;
         return roadmapService.getRoadmap(id, userId)
                 .orElseThrow(() -> new IllegalArgumentException("로드맵을 찾을 수 없습니다."));
     }
@@ -49,8 +48,9 @@ public class RoadmapController {
     // 전체 로드맵 조회
     @GetMapping
     public List<RoadmapResponseDto> getAll(
-            @AuthenticationPrincipal(expression = "userId") Long userId   // ✅ 동일 처리
+            @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
+        Long userId = userDetails != null ? userDetails.getUserId() : null;
         return roadmapService.getAllRoadmaps(userId);
     }
 

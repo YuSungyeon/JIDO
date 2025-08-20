@@ -7,5 +7,6 @@ public record SignupRequestDto(
         String password,
         String email,
         String nickName,
+        //int age,
         List<String> categories
 ) {}

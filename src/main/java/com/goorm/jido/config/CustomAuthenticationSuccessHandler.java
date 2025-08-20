@@ -13,16 +13,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-// 로그인 성공 시, 작동할 핸들러
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-
 
   @Override
   public void onAuthenticationSuccess(HttpServletRequest request,
                                       HttpServletResponse response,
-                                      Authentication authentication) throws IOException{
-    // 인증된 사용자 정보 꺼내기
-    User userDetails = (User) authentication.getPrincipal();
+                                      Authentication authentication) throws IOException {
+    // ✅ CustomUserDetails로 캐스팅
+    CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+    User user = userDetails.getUser(); // 실제 User 엔티티
 
     response.setStatus(HttpServletResponse.SC_OK);
     response.setContentType("application/json;charset=UTF-8");
@@ -30,9 +29,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     // 필요한 유저 정보만 골라서 응답
     Map<String, Object> result = new HashMap<>();
     result.put("message", "login successful");
-    result.put("username", userDetails.getUsername());
+    result.put("username", user.getUserLoginId()); // 또는 userDetails.getUsername()
     result.put("roles", userDetails.getAuthorities());
-    result.put("userId", userDetails.getUserId());
+    result.put("userId", user.getUserId());
 
     String json = new ObjectMapper().writeValueAsString(result);
     response.getWriter().write(json);

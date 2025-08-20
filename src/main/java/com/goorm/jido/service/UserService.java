@@ -38,6 +38,7 @@ public class UserService {
             .password(bCryptPasswordEncoder.encode(dto.password()))
             .email(dto.email())
             .nickname(dto.nickName())
+            //.age(dto.age())
             .build()
     );
 
