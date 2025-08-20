@@ -15,6 +15,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -37,7 +39,8 @@ public class WebSecurityConfig {
                                          ) throws Exception {
     return http
             // 모든 페이지 시큐리티 해제
-             .authorizeHttpRequests(auth -> auth
+            .cors(withDefaults())
+            .authorizeHttpRequests(auth -> auth
                       .anyRequest().permitAll()
              )
             .formLogin(formLogin -> formLogin // 폼 기반 로그인 설정
