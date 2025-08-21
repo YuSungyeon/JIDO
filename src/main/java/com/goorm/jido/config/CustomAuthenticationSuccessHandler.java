@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.goorm.jido.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
@@ -22,6 +24,12 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     // ✅ CustomUserDetails로 캐스팅
     CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
     User user = userDetails.getUser(); // 실제 User 엔티티
+
+    // 사용자 정보 로그 출력 (디버깅용) - 성연
+    log.info("✅ 로그인 성공 - userId={}, username={}, roles={}",
+            userDetails.getUserId(),
+            userDetails.getUsername(),
+            userDetails.getAuthorities());
 
     response.setStatus(HttpServletResponse.SC_OK);
     response.setContentType("application/json;charset=UTF-8");
