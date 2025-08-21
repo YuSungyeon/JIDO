@@ -1,7 +1,6 @@
 package com.goorm.jido.dto;
 
 import com.goorm.jido.entity.Roadmap;
-
 import java.time.LocalDateTime;
 
 public record RoadmapResponseDto(
@@ -19,6 +18,10 @@ public record RoadmapResponseDto(
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
+    public static RoadmapResponseDto from(Roadmap roadmap) {
+        return from(roadmap, 0L, false, 0L, false);
+    }
+
     public static RoadmapResponseDto from(
             Roadmap roadmap,
             long likeCount,

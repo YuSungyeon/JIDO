@@ -11,7 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
+import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -26,18 +26,14 @@ public class RoadmapController {
     // 로드맵 생성
     @PostMapping
     public RoadmapResponseDto create(
-            @jakarta.validation.Valid @RequestBody RoadmapRequestDto dto,
+            @RequestBody @Valid RoadmapRequestDto dto,
             @AuthenticationPrincipal(expression = "userId") Long userId   // ✅ Principal에서 userId 바로 추출
     ) {
         // 로그인 정보가 없으면 body의 authorId로 대체 허용(프론트 테스트 대비)
-        if (userId == null) {
-            userId = dto.authorId();
-        }
-        if (userId == null) {
-            throw new IllegalArgumentException("authorId 또는 로그인 정보가 필요합니다.");
-        }
+        if (userId == null) userId = dto.authorId();
+        if (userId == null) throw new IllegalArgumentException("authorId 또는 로그인 정보가 필요합니다.");
 
-        log.info("POST /roadmaps userId={} dto={}", userId, dto);
+        log.info("POST /api/roadmaps userId={} dto={}", userId, dto);
         return roadmapService.saveRoadmap(dto, userId);
     }
 

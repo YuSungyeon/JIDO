@@ -23,5 +23,9 @@ public record RoadmapRequestDto(
         List<@NotBlank(message = "section title must not be blank") String> sections,
 
         // 생략 시 엔티티 기본값(true) 사용
-        Boolean isPublic
+        Boolean isPublic,
+
+        // ✅ 로그인 없을 때만 사용하는 선택 필드 (프론트 테스트용)
+        // @Positive(message = "authorId must be positive")
+        Long authorId
 ) {}

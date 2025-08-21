@@ -41,7 +41,7 @@ public class Roadmap {
 
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
-    
+
     @PrePersist
     void onCreate() {
         LocalDateTime now = LocalDateTime.now();
@@ -73,20 +73,27 @@ public class Roadmap {
         this.roadmapSections.clear(); // orphanRemoval=true 덕분에 DB에서도 삭제됨
         if (newSections == null) return;
 
-        // orderIndex 를 쓰고 있다면 아래 주석 해제해서 순서 지정
-        int order = 0;
+        long order = 1L;
         for (RoadmapSection s : newSections) {
-            s.setRoadmap(this);                 // 연관관계 주인 설정
-            // s.setOrderIndex(order++);        // RoadmapSection에 orderIndex가 있다면 사용
-            this.roadmapSections.add(s);
+            RoadmapSection attached = RoadmapSection.builder()
+                    .roadmap(this) // ✅ setter 없이 연관관계 주입
+                    .title(s.getTitle())
+                    .sectionNum(s.getSectionNum() != null ? s.getSectionNum() : order)
+                    .build();
+            this.roadmapSections.add(attached);
+            order++;
         }
     }
 
     /** 섹션 단건 추가(순서가 필요하면 여기서 부여) */
     public void addSection(RoadmapSection section) {
-        section.setRoadmap(this);
-        // section.setOrderIndex(this.roadmapSections.size());
-        this.roadmapSections.add(section);
+        // ✅ setter 금지: 전달받은 값을 복사해 연관관계 주입
+        RoadmapSection copy = RoadmapSection.builder()
+                .roadmap(this)
+                .title(section.getTitle())
+                .sectionNum(section.getSectionNum())
+                .build();
+        this.roadmapSections.add(copy);
     }
 
     /** 섹션 전체 비우기 (필요 시 사용) */
@@ -94,18 +101,36 @@ public class Roadmap {
         this.roadmapSections.clear();
     }
 
-    /** (선택) DTO → 엔티티 매핑함수로 섹션 교체하고 싶을 때 */
-    /*
-    public void replaceSectionsFromDtos(List<SectionDto> dtos, Function<SectionDto, RoadmapSection> mapper) {
+    /** (선택) 섹션 제목 리스트로 통째 교체 */
+    public void replaceSectionsByTitles(List<String> titles){
         this.roadmapSections.clear();
-        if (dtos == null) return;
-        int order = 0;
-        for (SectionDto d : dtos) {
-            RoadmapSection s = mapper.apply(d);
-            s.setRoadmap(this);
-            // s.setOrderIndex(order++);
+        if (titles == null) return;
+        long order = 1L;
+        for (String t : titles) {
+            RoadmapSection s = RoadmapSection.builder()
+                    .roadmap(this)
+                    .title(t)
+                    .sectionNum(order++)
+                    .build();
             this.roadmapSections.add(s);
         }
     }
-    */
+
+    /** (참고) DTO → 엔티티 매핑함수로 섹션 교체하고 싶을 때 (예시)
+     *
+     *  public void replaceSectionsFromDtos(List<SectionDto> dtos, Function<SectionDto, RoadmapSection> mapper) {
+     *      this.roadmapSections.clear();
+     *      if (dtos == null) return;
+     *      long order = 1L;
+     *      for (SectionDto d : dtos) {
+     *          RoadmapSection s = mapper.apply(d);
+     *          RoadmapSection attached = RoadmapSection.builder()
+     *                  .roadmap(this)
+     *                  .title(s.getTitle())
+     *                  .sectionNum(s.getSectionNum() != null ? s.getSectionNum() : order++)
+     *                  .build();
+     *          this.roadmapSections.add(attached);
+     *      }
+     *  }
+     */
 }
