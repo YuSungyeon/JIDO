@@ -1,5 +1,6 @@
 package com.goorm.jido.controller;
 
+import com.goorm.jido.config.CustomUserDetails;
 import com.goorm.jido.service.RoadmapBookmarkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,8 +18,8 @@ public class BookmarkController {
      */
     @PostMapping
     public void bookmark(@PathVariable Long roadmapId,
-                         @AuthenticationPrincipal Long userId) {
-        bookmarkService.addBookmark(userId, roadmapId);
+                         @AuthenticationPrincipal CustomUserDetails user) {
+        bookmarkService.addBookmark(user.getUserId(), roadmapId);
     }
 
     /**
@@ -26,7 +27,7 @@ public class BookmarkController {
      */
     @DeleteMapping
     public void unbookmark(@PathVariable Long roadmapId,
-                           @AuthenticationPrincipal Long userId) {
-        bookmarkService.removeBookmark(userId, roadmapId);
+                           @AuthenticationPrincipal CustomUserDetails user) {
+        bookmarkService.removeBookmark(user.getUserId(), roadmapId);
     }
 }
