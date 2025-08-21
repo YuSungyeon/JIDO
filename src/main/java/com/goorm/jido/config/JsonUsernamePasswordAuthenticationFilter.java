@@ -42,6 +42,7 @@ public class JsonUsernamePasswordAuthenticationFilter extends UsernamePasswordAu
                 throw new AuthenticationServiceException("Username or password not provided");
             }
 
+            // 사용자 입력으로 인증 토큰(미인증 상태). 이 토큰을 AuthenticationManager에 넘겨 실제 인증을 시도
             UsernamePasswordAuthenticationToken authRequest =
                     new UsernamePasswordAuthenticationToken(username, password);
 

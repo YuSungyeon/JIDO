@@ -38,15 +38,28 @@ public class CustomUserDetails implements UserDetails {
         return Collections.emptyList();
     }
 
+    // 계정 만료 여부 반환
     @Override
-    public boolean isAccountNonExpired() { return true; }
+    public boolean isAccountNonExpired() {
+      // 만료 확인 로직
+      return true;
+    }
 
+    // 계정 잠금 여부 반환
     @Override
-    public boolean isAccountNonLocked() { return true; }
+    public boolean isAccountNonLocked() {
+      // 계정 잠금 확인 로직
+      return true;
+    }
 
+    // 패스워드 만료 여부 반환
     @Override
-    public boolean isCredentialsNonExpired() { return true; }
+    public boolean isCredentialsNonExpired() {
+      // 패스워드가 만료 확인 로직
+      return true;
+    }
 
+    // 계정 사용 가능 여부 반환
     @Override
-    public boolean isEnabled() { return true; }
+      public boolean isEnabled() { return true; }
 }

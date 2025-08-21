@@ -4,6 +4,7 @@ import com.goorm.jido.dto.*;
 import com.goorm.jido.entity.User;
 import com.goorm.jido.config.CustomLogoutSuccessHandler;
 import com.goorm.jido.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -78,36 +79,11 @@ public class UserController {
 
 
   // 로그인
+  @Operation(summary = "로그인 API", description = "username, password를 JSON으로 보내면 로그인 처리됩니다.")
   @PostMapping("/api/login")
-  public LoginResponse login(@ModelAttribute LoginRequest loginRequest){
-    try{
-
-      Authentication auth = authenticationManager.authenticate(
-              new UsernamePasswordAuthenticationToken(
-                      loginRequest.getUsername(),
-                      loginRequest.getPassword()
-              )
-      );
-
-
-      User user = (User)auth.getPrincipal();
-
-      // 인증 성공
-      return LoginResponse.builder()
-              .message("login successful")
-              .id(user.getUserId())
-              .build();
-
-    }catch (AuthenticationException e){
-      // 인증 실패
-      return LoginResponse.builder()
-              .message("login failed")
-              .id(null)
-              .build();
-    }
+  public void login(@RequestBody LoginRequest request) {
+    // 여기는 실제 동작하지 않고, Swagger 문서용 dummy API
+    throw new UnsupportedOperationException("This is handled by Spring Security filter");
   }
-
-
-
 
 }
