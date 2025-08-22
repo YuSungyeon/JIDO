@@ -42,7 +42,10 @@ public class WebSecurityConfig {
     return http
             .cors(c -> {})
             .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+            .authorizeHttpRequests(auth -> auth
+                    .requestMatchers("/api/login", "/static/**").permitAll() // 로그인은 허용
+                    .anyRequest().authenticated() // 나머지는 인증 필요
+            )
             .addFilterAt(jsonFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
   }
