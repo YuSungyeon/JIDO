@@ -25,6 +25,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
     User user = userDetails.getUser(); // 실제 User 엔티티
 
+    // 세션을 강제로 생성하여 Spring Security가 JSESSIONID 쿠키를 응답에 추가하도록
+    request.getSession(true);
+
     // 사용자 정보 로그 출력 (디버깅용) - 성연
     log.info("✅ 로그인 성공 - userId={}, username={}, roles={}",
             userDetails.getUserId(),
