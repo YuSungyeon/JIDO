@@ -20,25 +20,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
+  // 필요한 핸들러와 서비스를 필드로 주입
   private final UserDetailService userService;
+  private final CustomAuthenticationSuccessHandler successHandler;
+  private final CustomAuthenticationFailureHandler failureHandler;
 
+  // 정적 리소스는 보안 필터를 거치지 않도록 설정
   @Bean
   public WebSecurityCustomizer configure() {
     return web -> web.ignoring().requestMatchers("/static/**");
   }
 
   @Bean
-  public SecurityFilterChain filterChain(HttpSecurity http,
-                                         CustomAuthenticationSuccessHandler successHandler,
-                                         CustomAuthenticationFailureHandler failureHandler,
-                                         AuthenticationManager authenticationManager
-  ) throws Exception {
-
-    JsonUsernamePasswordAuthenticationFilter jsonFilter = new JsonUsernamePasswordAuthenticationFilter(authenticationManager);
-    jsonFilter.setFilterProcessesUrl("/api/login");
-    jsonFilter.setAuthenticationSuccessHandler(successHandler);
-    jsonFilter.setAuthenticationFailureHandler(failureHandler);
-
+  public SecurityFilterChain filterChain(HttpSecurity http, JsonUsernamePasswordAuthenticationFilter jsonFilter) throws Exception {
     return http
             .cors(c -> {})
             .csrf(AbstractHttpConfigurer::disable)
@@ -51,7 +45,16 @@ public class WebSecurityConfig {
   }
 
   @Bean
-  public AuthenticationManager authenticationManagerBean(BCryptPasswordEncoder bCryptPasswordEncoder) {
+  public JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter(AuthenticationManager authenticationManager) {
+    JsonUsernamePasswordAuthenticationFilter jsonFilter = new JsonUsernamePasswordAuthenticationFilter(authenticationManager);
+    jsonFilter.setFilterProcessesUrl("/api/login");
+    jsonFilter.setAuthenticationSuccessHandler(successHandler);
+    jsonFilter.setAuthenticationFailureHandler(failureHandler);
+    return jsonFilter;
+  }
+
+  @Bean
+  public AuthenticationManager authenticationManager(BCryptPasswordEncoder bCryptPasswordEncoder) {
     DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
     authProvider.setUserDetailsService(userService);
     authProvider.setPasswordEncoder(bCryptPasswordEncoder);

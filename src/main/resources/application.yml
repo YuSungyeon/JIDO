@@ -73,3 +73,8 @@ spring:
 server:
   address: 0.0.0.0  # 모든 IP 주소에서 접속 허용
   port: ${SERVER_PORT:8080}  # 환경변수 SERVER_PORT가 있으면 그 포트, 없으면 8080 포트 사용
+
+
+logging:
+  level:
+    org.springframework.security: DEBUG
