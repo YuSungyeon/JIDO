@@ -4,6 +4,7 @@ import com.goorm.jido.config.CustomUserDetails;
 import com.goorm.jido.dto.NotificationResponse;
 import com.goorm.jido.service.NotificationService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/notifications")
 @RequiredArgsConstructor
+@Slf4j
 public class NotificationController {
 
     private final NotificationService notificationService;
@@ -21,6 +23,7 @@ public class NotificationController {
      */
     @GetMapping
     public List<NotificationResponse> getNotifications(@AuthenticationPrincipal CustomUserDetails user) {
+        logUserInfo(user);
         return notificationService.getNotificationsForUser(user.getUserId());
     }
 
@@ -29,6 +32,7 @@ public class NotificationController {
      */
     @GetMapping("/unread")
     public List<NotificationResponse> getUnreadNotifications(@AuthenticationPrincipal CustomUserDetails user) {
+        logUserInfo(user);
         return notificationService.getUnreadNotifications(user.getUserId());
     }
 
@@ -45,6 +49,7 @@ public class NotificationController {
      */
     @PutMapping("/mark-all-read")
     public void markAllAsRead(@AuthenticationPrincipal CustomUserDetails user) {
+        logUserInfo(user);
         notificationService.markAllAsRead(user.getUserId());
     }
 
@@ -53,7 +58,15 @@ public class NotificationController {
      */
     @DeleteMapping("/read")
     public void deleteReadNotifications(@AuthenticationPrincipal CustomUserDetails user) {
+        logUserInfo(user);
         notificationService.deleteAllReadNotifications(user.getUserId());
+    }
+
+    private void logUserInfo(CustomUserDetails user) {
+        log.info("알림 로직 - 사용자 확인 - userId={}, username={}, roles={}",
+                user.getUserId(),
+                user.getUsername(),
+                user.getAuthorities());
     }
 
 }

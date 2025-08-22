@@ -1,5 +1,6 @@
 package com.goorm.jido.controller;
 
+import com.goorm.jido.config.CustomUserDetails;
 import com.goorm.jido.dto.CommentRequest;
 import com.goorm.jido.dto.CommentResponse;
 import com.goorm.jido.service.CommentService;
@@ -23,7 +24,9 @@ public class CommentController {
     @PostMapping
     public CommentResponse addComment(@PathVariable Long roadmapId,
                                       @RequestBody CommentRequest request,
-                                      @AuthenticationPrincipal Long userId) {
+                                      @AuthenticationPrincipal CustomUserDetails user) {
+        Long userId = user.getUserId();
+
         return commentService.addComment(userId, roadmapId, request.content());
     }
 
@@ -34,7 +37,8 @@ public class CommentController {
     public void updateComment(@PathVariable Long roadmapId,
                               @PathVariable Long commentId,
                               @RequestBody CommentRequest request,
-                              @AuthenticationPrincipal Long userId) {
+                              @AuthenticationPrincipal CustomUserDetails user) {
+        Long userId = user.getUserId();
         commentService.updateComment(userId, commentId, request.content());
     }
 
@@ -44,7 +48,8 @@ public class CommentController {
     @DeleteMapping("/{commentId}")
     public void deleteComment(@PathVariable Long roadmapId,
                               @PathVariable Long commentId,
-                              @AuthenticationPrincipal Long userId) {
+                              @AuthenticationPrincipal CustomUserDetails user) {
+        Long userId = user.getUserId();
         commentService.deleteComment(userId, commentId);
     }
 
@@ -53,7 +58,8 @@ public class CommentController {
      */
     @GetMapping
     public List<CommentResponse> getComments(@PathVariable Long roadmapId,
-                                             @AuthenticationPrincipal Long userId) {
+                                             @AuthenticationPrincipal CustomUserDetails user) {
+        Long userId = user.getUserId();
         return commentService.getCommentsByRoadmap(roadmapId, userId);
     }
 }
