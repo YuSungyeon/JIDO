@@ -43,7 +43,7 @@ public class WebSecurityConfig {
             .cors(c -> {})
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/api/login", "/static/**", "/users").permitAll() // 로그인은 허용
+                    .requestMatchers("/api/login", "/static/**", "/users", "/swagger-ui/**","/v3/api-docs/**").permitAll() // 로그인은 허용
                     .anyRequest().authenticated() // 나머지는 인증 필요
             )
             .addFilterAt(jsonFilter, UsernamePasswordAuthenticationFilter.class)
