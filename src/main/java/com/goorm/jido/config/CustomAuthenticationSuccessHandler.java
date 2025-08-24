@@ -8,6 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -21,14 +24,21 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
   public void onAuthenticationSuccess(HttpServletRequest request,
                                       HttpServletResponse response,
                                       Authentication authentication) throws IOException {
-    // ✅ CustomUserDetails로 캐스팅
     CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-    User user = userDetails.getUser(); // 실제 User 엔티티
+    User user = userDetails.getUser();
 
-    // 세션을 강제로 생성하여 Spring Security가 JSESSIONID 쿠키를 응답에 추가하도록
+    // ✅ 세션 생성
     request.getSession(true);
 
-    // 사용자 정보 로그 출력 (디버깅용) - 성연
+    // ✅ SecurityContext에 인증 정보 저장 + 세션에 넣기
+    SecurityContext context = SecurityContextHolder.createEmptyContext();
+    context.setAuthentication(authentication);
+    SecurityContextHolder.setContext(context);
+    request.getSession().setAttribute(
+            HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+            context
+    );
+
     log.info("✅ 로그인 성공 - userId={}, username={}, roles={}",
             userDetails.getUserId(),
             userDetails.getUsername(),
@@ -37,10 +47,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     response.setStatus(HttpServletResponse.SC_OK);
     response.setContentType("application/json;charset=UTF-8");
 
-    // 필요한 유저 정보만 골라서 응답
     Map<String, Object> result = new HashMap<>();
     result.put("message", "login successful");
-    result.put("username", user.getUserLoginId()); // 또는 userDetails.getUsername()
+    result.put("username", user.getUserLoginId());
     result.put("roles", userDetails.getAuthorities());
     result.put("userId", user.getUserId());
 
