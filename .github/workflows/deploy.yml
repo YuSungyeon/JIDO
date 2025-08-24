@@ -47,6 +47,7 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           source: "."
           target: "/home/${{ secrets.EC2_USER }}/JIDO"
+          debug: true
 
       - name: SSH into EC2 and run Docker Compose
         uses: appleboy/ssh-action@v1.0.0
