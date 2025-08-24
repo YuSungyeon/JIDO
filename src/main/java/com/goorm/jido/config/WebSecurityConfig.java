@@ -60,6 +60,7 @@ public class WebSecurityConfig {
     return http
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(AbstractHttpConfigurer::disable)
+
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers(HttpMethod.GET, "/roadmaps/**").permitAll()
                     .requestMatchers("/api/login", "/users", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
