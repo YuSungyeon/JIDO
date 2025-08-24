@@ -25,51 +25,47 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
-  // 필요한 핸들러와 서비스를 필드로 주입
   private final UserDetailService userService;
   private final CustomAuthenticationSuccessHandler successHandler;
   private final CustomAuthenticationFailureHandler failureHandler;
 
-  // 정적 리소스는 보안 필터를 거치지 않도록 설정
+  // 정적 리소스 등 보안 적용 제외할 경로 설정
   @Bean
-  public WebSecurityCustomizer configure() {
+  public WebSecurityCustomizer webSecurityCustomizer() {
     return web -> web.ignoring().requestMatchers("/static/**");
   }
 
+  // Spring Security 기준 CORS 설정 (중복 방지를 위해 WebMvcConfigurer는 제거)
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration config = new CorsConfiguration();
 
-    // ⚠️ 프론트엔드 서버의 주소를 정확히 적어주세요.
-    // 예: config.setAllowedOrigins(List.of("http://localhost:3000"));
-    config.setAllowedOrigins(List.of("http://localhost:5173")); // ❗️여기를 수정하세요
-
+    config.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:3000")); // 프론트 주소
     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
     config.setAllowedHeaders(List.of("*"));
     config.setExposedHeaders(List.of("*"));
-
-    // ❗️ 쿠키를 주고받기 위한 가장 중요한 설정입니다.
-    config.setAllowCredentials(true);
+    config.setAllowCredentials(true); // ✅ 쿠키 포함 요청 허용
 
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", config);
     return source;
   }
 
-
+  // 핵심 필터 체인 설정
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http, JsonUsernamePasswordAuthenticationFilter jsonFilter) throws Exception {
     return http
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/api/login", "/static/**", "/users", "/swagger-ui/**","/v3/api-docs/**").permitAll() // 로그인은 허용
-                    .anyRequest().authenticated() // 나머지는 인증 필요
+                    .requestMatchers("/api/login", "/users", "/swagger-ui/**", "/v3/api-docs/**", "/static/**").permitAll()
+                    .anyRequest().authenticated()
             )
-            .addFilterAt(jsonFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterAt(jsonFilter, UsernamePasswordAuthenticationFilter.class) // ✅ JSON 로그인 필터 등록
             .build();
   }
 
+  // JSON 기반 로그인 처리 필터
   @Bean
   public JsonUsernamePasswordAuthenticationFilter jsonUsernamePasswordAuthenticationFilter(AuthenticationManager authenticationManager) {
     JsonUsernamePasswordAuthenticationFilter jsonFilter = new JsonUsernamePasswordAuthenticationFilter(authenticationManager);
@@ -79,16 +75,17 @@ public class WebSecurityConfig {
     return jsonFilter;
   }
 
+  // 인증 관리자 및 비밀번호 인코더 설정
   @Bean
-  public AuthenticationManager authenticationManager(BCryptPasswordEncoder bCryptPasswordEncoder) {
+  public AuthenticationManager authenticationManager(BCryptPasswordEncoder passwordEncoder) {
     DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
     authProvider.setUserDetailsService(userService);
-    authProvider.setPasswordEncoder(bCryptPasswordEncoder);
+    authProvider.setPasswordEncoder(passwordEncoder);
     return new ProviderManager(authProvider);
   }
 
   @Bean
-  public BCryptPasswordEncoder bCryptPasswordEncoder() {
+  public BCryptPasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
 }

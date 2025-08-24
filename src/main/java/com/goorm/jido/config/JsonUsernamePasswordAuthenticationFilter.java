@@ -31,7 +31,14 @@ public class JsonUsernamePasswordAuthenticationFilter extends UsernamePasswordAu
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
 
-        if (!MediaType.APPLICATION_JSON_VALUE.equals(request.getContentType())) {
+        // ✅ OPTIONS 요청 무시
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            return null;
+        }
+
+        // ✅ Content-Type 확인
+        String contentType = request.getContentType();
+        if (contentType == null || !contentType.startsWith(MediaType.APPLICATION_JSON_VALUE)) {
             return super.attemptAuthentication(request, response);
         }
 
@@ -55,7 +62,7 @@ public class JsonUsernamePasswordAuthenticationFilter extends UsernamePasswordAu
         }
     }
 
-    // ✅ 인증 성공 후 세션/컨텍스트에 인증 정보 저장
+    // ✅ 인증 성공 시 SecurityContext에 저장 + 세션 생성
     @Override
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response,
@@ -64,5 +71,14 @@ public class JsonUsernamePasswordAuthenticationFilter extends UsernamePasswordAu
         SecurityContextHolder.getContext().setAuthentication(authResult);
         request.getSession(true); // 세션 강제 생성
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
+    }
+
+    // (선택) 인증 실패 시 처리
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request,
+                                              HttpServletResponse response,
+                                              AuthenticationException failed)
+            throws IOException, ServletException {
+        this.getFailureHandler().onAuthenticationFailure(request, response, failed);
     }
 }
