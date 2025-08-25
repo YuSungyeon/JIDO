@@ -65,11 +65,11 @@ public class WebSecurityConfig {
                             "/roadmaps",
                             "/roadmaps/**",
                             "/sections",
-                            "/sections/*",
+                            "/sections/**",
                             "/steps",
-                            "/steps/*",
+                            "/steps/**",
                             "/step-contents",
-                            "/step-contents/*"
+                            "/step-contents/**"
                     ).permitAll()
                     .requestMatchers("/api/login", "/users", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                     .anyRequest().authenticated()
