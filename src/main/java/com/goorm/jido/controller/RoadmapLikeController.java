@@ -7,6 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/roadmaps/{roadmapId}/like")
@@ -33,5 +36,21 @@ public class RoadmapLikeController {
                        @AuthenticationPrincipal CustomUserDetails user) {
         log.info("좋아요 취소 요청 - userId={}, username={}", user.getUserId(), user.getUsername());
         roadmapLikeService.removeLike(user.getUserId(), roadmapId);
+    }
+
+    @GetMapping
+    public Map<String, Object> getLikeStatus(@PathVariable Long roadmapId,
+                                             @AuthenticationPrincipal CustomUserDetails user) {
+        boolean liked = false;
+        if (user != null) {
+            liked = roadmapLikeService.isLiked(user.getUserId(), roadmapId);
+        }
+
+        long likeCount = roadmapLikeService.countLikes(roadmapId);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("liked", liked);
+        response.put("likeCount", likeCount);
+        return response;
     }
 }
