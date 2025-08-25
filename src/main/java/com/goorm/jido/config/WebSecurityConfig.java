@@ -69,7 +69,8 @@ public class WebSecurityConfig {
                             "/steps",
                             "/steps/**",
                             "/step-contents",
-                            "/step-contents/**"
+                            "/step-contents/**",
+                            "/categories"
                     ).permitAll()
                     .requestMatchers("/api/login", "/users", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                     .anyRequest().authenticated()

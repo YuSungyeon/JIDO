@@ -37,7 +37,7 @@ public class RoadmapController {
         if (userId == null) userId = dto.authorId();
         if (userId == null) throw new IllegalArgumentException("authorId 또는 로그인 정보가 필요합니다.");
 
-        log.info("POST /api/roadmaps userId={} dto={}", userId, dto);
+        log.info("POST /roadmaps userId={} dto={}", userId, dto);
         return roadmapService.saveRoadmap(dto, userId);
     }
 

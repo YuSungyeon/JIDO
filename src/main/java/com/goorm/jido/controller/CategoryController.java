@@ -17,7 +17,7 @@ public class CategoryController {
   private final CategoryService categoryService;
 
 
-  @GetMapping("categories")
+  @GetMapping("/categories")
   public ResponseEntity<List<CategoryResponseDto>>  getCategories() {
     List<CategoryResponseDto> categories = categoryService.findAll()
             .stream()
