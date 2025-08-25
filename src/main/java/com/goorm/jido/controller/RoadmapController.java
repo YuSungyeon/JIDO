@@ -3,6 +3,7 @@ package com.goorm.jido.controller;
 import com.goorm.jido.dto.RoadmapRequestDto;
 import com.goorm.jido.dto.RoadmapResponseDto;
 import com.goorm.jido.dto.RoadmapUpdateRequestDto;
+import com.goorm.jido.dto.RoadmapDetailResponseDto;
 import com.goorm.jido.service.RoadmapService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -72,5 +73,12 @@ public class RoadmapController {
         log.info("PUT /api/roadmaps/{} by user={} dto={}", id, userId, dto);
         return roadmapService.updateRoadmap(id, userId, dto);
     }
-
+    @GetMapping("/{id}/detail")
+    public RoadmapDetailResponseDto getDetail(
+            @PathVariable Long id,
+            @AuthenticationPrincipal(expression = "userId") Long userId
+    ) {
+        log.info("GET /api/roadmaps/{}/detail userId={}", id, userId);
+        return roadmapService.getRoadmapDetail(id, userId);
+    }
 }

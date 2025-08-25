@@ -14,8 +14,20 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
+import com.goorm.jido.dto.RoadmapDetailResponseDto;
+import com.goorm.jido.dto.SectionDto;
+import com.goorm.jido.dto.StepDto;
+import com.goorm.jido.dto.StepContentDto;
+
+import com.goorm.jido.entity.Step;
+import com.goorm.jido.entity.StepContent;
+
+import com.goorm.jido.repository.StepRepository;
+import com.goorm.jido.repository.StepContentRepository;
+
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -91,6 +103,48 @@ public class RoadmapService {
 
         return RoadmapResponseDto.from(roadmap, 0L, false, 0L, false); // 기존 매퍼/팩토리 유지
     }
+    @Transactional(readOnly = true)
+    public RoadmapDetailResponseDto getRoadmapDetail(Long id, Long userId) {
+        // 1) 로드맵 + 섹션까지 fetch-join
+        var roadmap = roadmapRepository.findByIdWithSections(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "로드맵을 찾을 수 없습니다."));
 
+        var sections = roadmap.getRoadmapSections();
+        if (sections == null || sections.isEmpty()) {
+            return RoadmapDetailResponseDto.from(roadmap, List.of());
+        }
+
+        // 2) 섹션ID 모아서 스텝 일괄 조회
+        var sectionIds = sections.stream().map(s -> s.getSectionId()).toList();
+        var steps = stepRepository.findBySectionIds(sectionIds);
+
+        // 3) 스텝ID 모아서 콘텐츠 일괄 조회
+        var stepIds = steps.stream().map(Step::getStepId).toList();
+        var contents = stepIds.isEmpty() ? List.<StepContent>of()
+                : stepContentRepository.findByStepIds(stepIds);
+
+        // 4) 콘텐츠를 stepId별로 그룹화 → StepContentDto 리스트
+        Map<Long, List<StepContentDto>> contentsByStepId = contents.stream()
+                .collect(Collectors.groupingBy(c -> c.getStep().getStepId(),
+                        Collectors.mapping(StepContentDto::from, Collectors.toList())));
+
+        // 5) 스텝을 sectionId별로 그룹화 → StepDto 리스트
+        Map<Long, List<StepDto>> stepsBySectionId = new HashMap<>();
+        for (var s : steps) {
+            var list = stepsBySectionId.computeIfAbsent(s.getRoadmapSection().getSectionId(), k -> new ArrayList<>());
+            list.add(StepDto.of(s, contentsByStepId.getOrDefault(s.getStepId(), List.of())));
+        }
+
+        // 6) 섹션 DTO 조립 (섹션 순서 정렬)
+        var sectionDtos = sections.stream()
+                .sorted(Comparator.comparing(com.goorm.jido.entity.RoadmapSection::getSectionNum))
+                .map(sec -> SectionDto.of(sec, stepsBySectionId.getOrDefault(sec.getSectionId(), List.of())))
+                .toList();
+
+        return RoadmapDetailResponseDto.from(roadmap, sectionDtos);
+    }
+
+    private final StepRepository stepRepository;
+    private final StepContentRepository stepContentRepository;
 
 }
