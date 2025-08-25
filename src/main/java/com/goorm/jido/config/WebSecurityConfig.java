@@ -61,7 +61,7 @@ public class WebSecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
 
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(HttpMethod.GET, "/roadmaps/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/roadmaps/**" ,"/sections/*", "/steps/*", "step-contents/*").permitAll()
                     .requestMatchers("/api/login", "/users", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                     .anyRequest().authenticated()
             )
