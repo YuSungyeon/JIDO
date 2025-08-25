@@ -28,18 +28,14 @@ public class RoadmapController {
     // 로드맵 생성
     @PostMapping
     public RoadmapResponseDto create(
-            @RequestBody RoadmapRequestDto dto,
-            @AuthenticationPrincipal CustomUserDetails userDetails  // ✅ CustomUserDetails 전체 주입
-            @RequestBody @Valid RoadmapRequestDto dto,
-            @AuthenticationPrincipal(expression = "userId") Long userId   // ✅ Principal에서 userId 바로 추출
+            @AuthenticationPrincipal CustomUserDetails userDetails,  // ✅ CustomUserDetails 전체 주입
+            @RequestBody @Valid RoadmapRequestDto dto
+
     ) {
+        Long userId = userDetails != null ? userDetails.getUserId() : dto.authorId();
         // 로그인 정보가 없으면 body의 authorId로 대체 허용(프론트 테스트 대비)
         if (userId == null) userId = dto.authorId();
         if (userId == null) throw new IllegalArgumentException("authorId 또는 로그인 정보가 필요합니다.");
-        Long userId = userDetails != null ? userDetails.getUserId() : dto.authorId();
-        if (userId == null) {
-            throw new IllegalArgumentException("authorId 또는 로그인 정보가 필요합니다.");
-        }
 
         log.info("POST /api/roadmaps userId={} dto={}", userId, dto);
         return roadmapService.saveRoadmap(dto, userId);
@@ -70,12 +66,15 @@ public class RoadmapController {
     public void delete(@PathVariable Long id) {
         roadmapService.deleteRoadmap(id);
     }
+
     @PutMapping("/{id}")
     public RoadmapResponseDto update(
             @jakarta.validation.constraints.Positive @PathVariable Long id,
             @jakarta.validation.Valid @RequestBody RoadmapUpdateRequestDto dto,
-            @AuthenticationPrincipal(expression = "userId") Long userId
+            @AuthenticationPrincipal CustomUserDetails userDetails
+            //@AuthenticationPrincipal(expression = "userId") Long userId
     ) {
+        Long userId = userDetails != null ? userDetails.getUserId() : null;
         if (userId == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Login required");
         }
@@ -85,8 +84,10 @@ public class RoadmapController {
     @GetMapping("/{id}/detail")
     public RoadmapDetailResponseDto getDetail(
             @PathVariable Long id,
-            @AuthenticationPrincipal(expression = "userId") Long userId
+            @AuthenticationPrincipal CustomUserDetails userDetails
+            //@AuthenticationPrincipal(expression = "userId") Long userId
     ) {
+        Long userId = userDetails != null ? userDetails.getUserId() : null;
         log.info("GET /api/roadmaps/{}/detail userId={}", id, userId);
         return roadmapService.getRoadmapDetail(id, userId);
     }
