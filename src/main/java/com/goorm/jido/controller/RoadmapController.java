@@ -29,7 +29,7 @@ public class RoadmapController {
     @PostMapping
     public RoadmapResponseDto create(
             @AuthenticationPrincipal CustomUserDetails userDetails,  // ✅ CustomUserDetails 전체 주입
-            @RequestBody @Valid RoadmapRequestDto dto
+            @RequestBody @jakarta.validation.Valid RoadmapRequestDto dto
 
     ) {
         Long userId = userDetails != null ? userDetails.getUserId() : dto.authorId();
