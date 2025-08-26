@@ -27,7 +27,7 @@ public class CommentController {
                                       @AuthenticationPrincipal CustomUserDetails user) {
         Long userId = user.getUserId();
 
-        return commentService.addComment(userId, roadmapId, request.content());
+        return commentService.addComment(userId, roadmapId, request.content(), request.parentId());
     }
 
     /**

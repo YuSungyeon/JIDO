@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
+
 
 @RequiredArgsConstructor
 @Service
@@ -33,11 +34,17 @@ public class CommentService {
      * @param content   댓글 내용
      */
     @Transactional
-    public CommentResponse addComment(Long userId, Long roadmapId, String content) {
+    public CommentResponse addComment(Long userId, Long roadmapId, String content, Long parentId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
         Roadmap roadmap = roadmapRepository.findById(roadmapId)
                 .orElseThrow(() -> new EntityNotFoundException("로드맵을 찾을 수 없습니다."));
+
+        Comment parent = null;
+        if (parentId != null) {
+            parent = commentRepository.findById(parentId)
+                    .orElseThrow(() -> new EntityNotFoundException("부모 댓글이 존재하지 않습니다."));
+        }
 
         Comment comment = Comment.builder()
                 .author(user)
@@ -113,17 +120,44 @@ public class CommentService {
      * @param roadmapId 조회할 로드맵 ID
      * @return 해당 로드맵에 작성된 댓글 리스트
      */
-    @Transactional(readOnly = true)
     public List<CommentResponse> getCommentsByRoadmap(Long roadmapId, Long userId) {
-        List<Comment> comments = commentRepository.findByRoadmap_RoadmapIdOrderByCreatedAtDesc(roadmapId);
+        List<Comment> allComments = commentRepository.findByRoadmap_RoadmapIdOrderByCreatedAtDesc(roadmapId);
 
-        return comments.stream()
-                .map(comment -> {
-                    long likeCount = commentLikeService.countCommentLikes(comment.getCommentId());
-                    boolean likedByMe = commentLikeService.isLiked(userId, comment.getCommentId());
-                    return CommentResponse.from(comment, likeCount, likedByMe);
-                })
-                .toList();
+        // 1. 댓글 ID → 응답 DTO 매핑
+        Map<Long, CommentResponse> dtoMap = new HashMap<>();
+        Map<Long, List<CommentResponse>> childMap = new HashMap<>();
+
+        for (Comment comment : allComments) {
+            long likeCount = commentLikeService.countCommentLikes(comment.getCommentId());
+            boolean likedByMe = commentLikeService.isLiked(userId, comment.getCommentId());
+
+            CommentResponse dto = CommentResponse.from(comment, likeCount, likedByMe);
+            dtoMap.put(comment.getCommentId(), dto);
+
+            if (comment.getParent() != null) {
+                childMap.computeIfAbsent(comment.getParent().getCommentId(), k -> new ArrayList<>())
+                        .add(dto);
+            }
+        }
+
+        // 2. 트리 구조로 묶기
+        List<CommentResponse> roots = new ArrayList<>();
+        for (Comment comment : allComments) {
+            if (comment.getParent() == null) {
+                Long cid = comment.getCommentId();
+                List<CommentResponse> replies = childMap.getOrDefault(cid, List.of());
+
+                CommentResponse response = CommentResponse.withReplies(
+                        comment,
+                        commentLikeService.countCommentLikes(cid),
+                        commentLikeService.isLiked(userId, cid),
+                        replies
+                );
+                roots.add(response);
+            }
+        }
+
+        return roots;
     }
 
     /**
