@@ -7,6 +7,7 @@ import java.util.List;
 
 public record CommentResponse(
         Long commentId,
+        Long authorId,
         String authorNickname,
         String content,
         LocalDateTime createdAt,
@@ -18,6 +19,7 @@ public record CommentResponse(
     public static CommentResponse from(Comment comment, long likeCount, boolean likedByMe) {
         return new CommentResponse(
                 comment.getCommentId(),
+                comment.getAuthor().getUserId(),
                 comment.getAuthor().getNickname(),
                 comment.getContent(),
                 comment.getCreatedAt(),
@@ -31,6 +33,7 @@ public record CommentResponse(
     public static CommentResponse withReplies(Comment comment, long likeCount, boolean likedByMe, List<CommentResponse> replies) {
         return new CommentResponse(
                 comment.getCommentId(),
+                comment.getAuthor().getUserId(),
                 comment.getAuthor().getNickname(),
                 comment.getContent(),
                 comment.getCreatedAt(),
