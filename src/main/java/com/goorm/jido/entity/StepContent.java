@@ -35,4 +35,10 @@ public class StepContent {
 
     @Column(name = "finished", nullable = false)
     private Boolean finished = false; // 완료 여부
+
+    public void update(String content, Boolean finished) {
+        if (content != null) this.content = content;
+        if (finished != null) this.finished = finished;
+    }
+
 }

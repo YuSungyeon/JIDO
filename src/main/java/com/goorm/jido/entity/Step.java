@@ -40,4 +40,9 @@ public class Step {
 
     @OneToMany(mappedBy = "step", cascade = CascadeType.ALL)
     private List<StepContent> stepContents; // 해당 스텝의 컨텐츠들
+
+    public void update(String title, Long stepNumber) {
+        if (title != null && !title.isBlank()) this.title = title;
+        if (stepNumber != null) this.stepNumber = stepNumber;
+    }
 }

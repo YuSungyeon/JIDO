@@ -1,8 +1,10 @@
 package com.goorm.jido.controller;
 
+import com.goorm.jido.dto.RoadmapSectionUpdateRequestDto;
 import com.goorm.jido.entity.RoadmapSection;
 import com.goorm.jido.service.RoadmapSectionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,4 +34,15 @@ public class RoadmapSectionController {
     public void delete(@PathVariable Long id) {
         roadmapSectionService.deleteSection(id);
     }
+
+    @PutMapping("/{id}")
+    public RoadmapSection update(
+            @PathVariable Long id,
+            @RequestBody RoadmapSectionUpdateRequestDto dto,
+            @AuthenticationPrincipal com.goorm.jido.config.CustomUserDetails user
+    ) {
+        Long userId = (user != null) ? user.getUserId() : null;
+        return roadmapSectionService.updateSection(id, userId, dto);
+    }
+
 }

@@ -1,8 +1,10 @@
 package com.goorm.jido.controller;
 
+import com.goorm.jido.dto.StepUpdateRequestDto;
 import com.goorm.jido.entity.Step;
 import com.goorm.jido.service.StepService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,4 +34,15 @@ public class StepController {
     public void delete(@PathVariable Long id) {
         stepService.deleteStep(id);
     }
+
+    @PutMapping("/{id}")
+    public Step update(
+            @PathVariable Long id,
+            @RequestBody StepUpdateRequestDto dto,
+            @AuthenticationPrincipal com.goorm.jido.config.CustomUserDetails user
+    ) {
+        Long userId = (user != null) ? user.getUserId() : null;
+        return stepService.updateStep(id, userId, dto);
+    }
+
 }
