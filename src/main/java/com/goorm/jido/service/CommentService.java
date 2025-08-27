@@ -50,6 +50,7 @@ public class CommentService {
                 .author(user)
                 .roadmap(roadmap)
                 .content(content)
+                .parent(parent)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(null) // 수정 안했으므로 null 유지
                 .build();
@@ -106,7 +107,9 @@ public class CommentService {
             throw new IllegalStateException("댓글 작성자만 삭제할 수 있습니다.");
         }
 
-        commentRepository.delete(comment);
+        // soft delete
+        comment.softDelete();
+        commentRepository.save(comment);
 
         // 관련된 읽지 않은 알림도 함께 삭제
         notificationService.deleteUnreadNotification(

@@ -37,6 +37,14 @@ public class Comment {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    @Column(nullable = false)
+    private boolean isDeleted = false;
+
+    public void softDelete() {
+        this.isDeleted = true;
+        this.content = "삭제된 댓글입니다.";
+    }
+
     public void updateContent(String content) {
         this.content = content;
         this.updatedAt = LocalDateTime.now();

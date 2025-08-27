@@ -1,12 +1,15 @@
 package com.goorm.jido.controller;
 
 import com.goorm.jido.config.CustomUserDetails;
+import com.goorm.jido.dto.BookmarkResponse;
+import com.goorm.jido.entity.RoadmapBookmark;
 import com.goorm.jido.service.RoadmapBookmarkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -50,5 +53,10 @@ public class BookmarkController {
         response.put("bookmarkCount", bookmarkCount);
 
         return response;
+    }
+
+    @GetMapping("/my")
+    public List<BookmarkResponse> getMyBookmarks(@AuthenticationPrincipal CustomUserDetails user) {
+        return bookmarkService.getBookmarksByUser(user.getUserId());
     }
 }

@@ -87,6 +87,7 @@ public class NotificationService {
     public List<NotificationResponse> getNotificationsForUser(Long userId) {
         return notificationRepository.findByReceiver_UserIdOrderByCreatedAtDesc(userId).stream()
                 .map(n -> new NotificationResponse(
+                        n.getNotificationId(),
                         n.getMessage(),
                         n.getCreatedAt(),
                         n.isRead(),
@@ -102,6 +103,7 @@ public class NotificationService {
     public List<NotificationResponse> getUnreadNotifications(Long userId) {
         return notificationRepository.findByReceiver_UserIdAndReadFalseOrderByCreatedAtDesc(userId).stream()
                 .map(n -> new NotificationResponse(
+                        n.getNotificationId(),
                         n.getMessage(),
                         n.getCreatedAt(),
                         n.isRead(),
