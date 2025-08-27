@@ -34,4 +34,9 @@ public class RoadmapSection {
     // 해당 섹션에 포함된 Step 리스트
     @OneToMany(mappedBy = "roadmapSection", cascade = CascadeType.ALL)
     private List<Step> steps;
+
+    public void update(String title, Long sectionNum) {
+        if (title != null && !title.isBlank()) this.title = title;
+        if (sectionNum != null) this.sectionNum = sectionNum;
+    }
 }

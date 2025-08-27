@@ -72,6 +72,10 @@ public class WebSecurityConfig {
                             "/step-contents/**",
                             "/categories"
                     ).permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/roadmaps/**").permitAll()
+                    .requestMatchers(HttpMethod.PUT, "/sections/**", "/steps/**", "/step-contents/**").authenticated()
+                    // .requestMatchers(HttpMethod.PUT, "/api/roadmaps/**").authenticated()
+                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     .requestMatchers("/api/login", "/users", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                     .anyRequest().authenticated()
             )
