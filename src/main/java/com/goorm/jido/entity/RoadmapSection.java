@@ -1,5 +1,7 @@
 package com.goorm.jido.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "roadmap_section")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"}) // 프록시 필드 무시
 public class RoadmapSection {
 
     // 섹션 ID (PK)
@@ -21,6 +24,7 @@ public class RoadmapSection {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roadmap_id", nullable = false)
+    @JsonIgnore
     private Roadmap roadmap;
 
     // 섹션 제목
