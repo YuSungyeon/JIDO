@@ -1,5 +1,6 @@
 package com.goorm.jido.service;
 
+import com.goorm.jido.dto.BookmarkResponse;
 import com.goorm.jido.entity.Roadmap;
 import com.goorm.jido.entity.RoadmapBookmark;
 import com.goorm.jido.entity.User;
@@ -115,7 +116,12 @@ public class RoadmapBookmarkService {
      * @return 해당 사용자가 북마크한 로드맵 리스트
      */
     @Transactional(readOnly = true)
-    public List<RoadmapBookmark> getBookmarksByUser(Long userId) {
-        return bookmarkRepository.findByUser_UserIdOrderByCreatedAtDesc(userId);
+    public List<BookmarkResponse> getBookmarksByUser(Long userId) {
+        return bookmarkRepository.findByUser_UserIdOrderByCreatedAtDesc(userId).stream()
+                .map(bookmark -> new BookmarkResponse(
+                        bookmark.getRoadmap().getRoadmapId(),
+                        bookmark.getCreatedAt()
+                ))
+                .toList();
     }
 }

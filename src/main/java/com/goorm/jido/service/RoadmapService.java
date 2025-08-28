@@ -28,6 +28,8 @@ public class RoadmapService {
     private final UserRepository userRepository;
     private final StepRepository stepRepository;
     private final StepContentRepository stepContentRepository;
+    private final RoadmapLikeService roadmapLikeService;
+    private final RoadmapBookmarkService roadmapBookmarkService;
 
     // 로드맵 생성
     public RoadmapResponseDto saveRoadmap(RoadmapRequestDto dto, Long userId) {
@@ -79,14 +81,26 @@ public class RoadmapService {
     @Transactional(readOnly = true)
     public Optional<RoadmapResponseDto> getRoadmap(Long id, Long userId) {
         return roadmapRepository.findById(id)
-                .map(r -> RoadmapResponseDto.from(r, 0L, false, 0L, false));
+                .map(r -> RoadmapResponseDto.from(
+                        r,
+                        roadmapLikeService.countLikes(r.getRoadmapId()),
+                        roadmapLikeService.isLiked(userId, r.getRoadmapId()),
+                        roadmapBookmarkService.countBookmarks(r.getRoadmapId()),
+                        roadmapBookmarkService.isBookmarked(userId, r.getRoadmapId())
+                ));
     }
 
     // 전체 로드맵 조회(라이트)
     @Transactional(readOnly = true)
     public List<RoadmapResponseDto> getAllRoadmaps(Long userId) {
         return roadmapRepository.findAll().stream()
-                .map(r -> RoadmapResponseDto.from(r, 0L, false, 0L, false))
+                .map(r -> RoadmapResponseDto.from(
+                        r,
+                        roadmapLikeService.countLikes(r.getRoadmapId()),
+                        roadmapLikeService.isLiked(userId, r.getRoadmapId()),
+                        roadmapBookmarkService.countBookmarks(r.getRoadmapId()),
+                        roadmapBookmarkService.isBookmarked(userId, r.getRoadmapId())
+                ))
                 .toList();
     }
 
@@ -113,7 +127,11 @@ public class RoadmapService {
             roadmap.replaceSectionsByTitles(clean);
         }
 
-        return RoadmapResponseDto.from(roadmap, 0L, false, 0L, false);
+        return RoadmapResponseDto.from(roadmap,
+                roadmapLikeService.countLikes(roadmap.getRoadmapId()),
+                roadmapLikeService.isLiked(userId, roadmap.getRoadmapId()),
+                roadmapBookmarkService.countBookmarks(roadmap.getRoadmapId()),
+                roadmapBookmarkService.isBookmarked(userId, roadmap.getRoadmapId()));
     }
 
     // 상세(트리) 조회: 로드맵 + 섹션 + 스텝 + 콘텐츠
@@ -156,6 +174,11 @@ public class RoadmapService {
                 .map(sec -> SectionDto.of(sec, stepsBySectionId.getOrDefault(sec.getSectionId(), List.of())))
                 .toList();
 
-        return RoadmapDetailResponseDto.from(roadmap, sectionDtos);
+        return RoadmapDetailResponseDto.from(roadmap,
+                sectionDtos,
+                roadmapLikeService.countLikes(roadmap.getRoadmapId()),
+                roadmapLikeService.isLiked(userId, roadmap.getRoadmapId()),
+                roadmapBookmarkService.countBookmarks(roadmap.getRoadmapId()),
+                roadmapBookmarkService.isBookmarked(userId, roadmap.getRoadmapId()));
     }
 }

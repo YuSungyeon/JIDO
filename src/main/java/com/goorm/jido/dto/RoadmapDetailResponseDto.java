@@ -21,7 +21,20 @@ public record RoadmapDetailResponseDto(
         LocalDateTime updatedAt,
         List<SectionDto> sections
 ) {
+    // 기본 from (기존과 동일)
     public static RoadmapDetailResponseDto from(Roadmap r, List<SectionDto> sections) {
+        return from(r, sections, 0L, false, 0L, false);
+    }
+
+    // 오버로드된 from (좋아요/북마크 정보 포함)
+    public static RoadmapDetailResponseDto from(
+            Roadmap r,
+            List<SectionDto> sections,
+            long likeCount,
+            boolean likedByMe,
+            long bookmarkCount,
+            boolean bookmarkedByMe
+    ) {
         return new RoadmapDetailResponseDto(
                 r.getRoadmapId(),
                 r.getTitle(),
@@ -30,7 +43,10 @@ public record RoadmapDetailResponseDto(
                 r.getIsPublic(),
                 r.getAuthor().getUserId(),
                 r.getAuthor().getNickname(),
-                0L, false, 0L, false,
+                likeCount,
+                likedByMe,
+                bookmarkCount,
+                bookmarkedByMe,
                 r.getCreatedAt(),
                 r.getUpdatedAt(),
                 sections
