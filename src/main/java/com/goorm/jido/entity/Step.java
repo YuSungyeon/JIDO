@@ -6,6 +6,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,6 +28,7 @@ public class Step {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "section_id", nullable = false)
     @JsonIgnore                         // 🔴 역참조(스텝->섹션) 숨김
+    @OnDelete(action = OnDeleteAction.CASCADE)     // ✅ DB 레벨 연쇄삭제 힌트
     private RoadmapSection roadmapSection; // 소속 섹션
 
     @Column(name = "title", nullable = false)
