@@ -2,6 +2,8 @@ package com.goorm.jido.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,6 +27,7 @@ public class RoadmapSection {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roadmap_id", nullable = false)
     @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)     // ✅ DB 레벨 연쇄삭제 힌트
     private Roadmap roadmap;
 
     // 섹션 제목

@@ -105,8 +105,11 @@ public class RoadmapService {
     }
 
     // 로드맵 삭제
+    @Transactional
     public void deleteRoadmap(Long id) {
-        roadmapRepository.deleteById(id);
+        var roadmap = roadmapRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "로드맵을 찾을 수 없습니다."));
+        roadmapRepository.delete(roadmap); // ← deleteById(id) 대신 이거! (선택이지만 추천)
     }
 
     // 로드맵 수정
