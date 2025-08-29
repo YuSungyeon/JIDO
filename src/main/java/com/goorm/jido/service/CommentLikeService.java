@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -112,4 +112,40 @@ public class CommentLikeService {
         List<Long> commentIds = likeRepository.findCommentIdsWithLikeCountGreaterThanEqual(likeCount);
         return commentRepository.findAllById(commentIds);
     }
+
+    /**
+     * 댓글 목록에 대한 좋아요 개수 Map 반환
+     * @param comments 댓글 리스트
+     * @return commentId → 좋아요 수 Map
+     */
+    @Transactional(readOnly = true)
+    public Map<Long, Long> getCommentLikeCounts(List<Comment> comments) {
+        List<Long> ids = comments.stream()
+                .map(Comment::getCommentId)
+                .toList();
+
+        List<Object[]> rawResults = likeRepository.countLikesByCommentIds(ids);
+
+        Map<Long, Long> result = new HashMap<>();
+        for (Object[] row : rawResults) {
+            Long commentId = (Long) row[0];
+            Long count = (Long) row[1]; // COUNT는 Long으로 반환됨
+            result.put(commentId, count);
+        }
+
+        return result;
+    }
+
+    /**
+     * 특정 사용자가 좋아요한 댓글 ID 집합 반환
+     * @param userId 사용자 ID
+     * @param comments 댓글 리스트
+     * @return 좋아요한 댓글 ID Set
+     */
+    @Transactional(readOnly = true)
+    public Set<Long> getLikedCommentIdsByUser(Long userId, List<Comment> comments) {
+        List<Long> ids = comments.stream().map(Comment::getCommentId).toList();
+        return new HashSet<>(likeRepository.findLikedCommentIds(userId, ids));
+    }
+
 }

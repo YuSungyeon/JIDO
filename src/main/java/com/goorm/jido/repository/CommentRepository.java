@@ -9,6 +9,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     // 특정 로드맵의 댓글 목록 (최신순)
     List<Comment> findByRoadmap_RoadmapIdOrderByCreatedAtDesc(Long roadmapId);
+    List<Comment> findByRoadmap_RoadmapIdOrderByCreatedAtAsc(Long roadmapId);
 
     // 특정 유저가 작성한 댓글 목록 (최신순)
     List<Comment> findByAuthor_UserIdOrderByCreatedAtDesc(Long authorId);

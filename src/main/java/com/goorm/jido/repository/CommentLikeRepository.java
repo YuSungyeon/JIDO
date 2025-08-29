@@ -20,4 +20,21 @@ public interface CommentLikeRepository extends JpaRepository<CommentLike, Long> 
         HAVING COUNT(cl.comment_like_id) >= :likeCount
     """, nativeQuery = true)
     List<Long> findCommentIdsWithLikeCountGreaterThanEqual(@Param("likeCount") long likeCount);
+
+    @Query("""
+    SELECT cl.comment.commentId, COUNT(cl)
+    FROM CommentLike cl
+    WHERE cl.comment.commentId IN :commentIds
+    GROUP BY cl.comment.commentId
+""")
+    List<Object[]> countLikesByCommentIds(@Param("commentIds") List<Long> commentIds);
+
+// 변환은 service 쪽에서 Map<Long, Long> 으로 처리
+
+    @Query("""
+    SELECT cl.comment.commentId
+    FROM CommentLike cl
+    WHERE cl.user.userId = :userId AND cl.comment.commentId IN :commentIds
+""")
+    List<Long> findLikedCommentIds(@Param("userId") Long userId, @Param("commentIds") List<Long> commentIds);
 }

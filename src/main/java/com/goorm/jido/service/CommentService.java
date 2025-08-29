@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.*;
 
-
 @RequiredArgsConstructor
 @Service
 public class CommentService {
@@ -124,43 +123,12 @@ public class CommentService {
      * @return 해당 로드맵에 작성된 댓글 리스트
      */
     public List<CommentResponse> getCommentsByRoadmap(Long roadmapId, Long userId) {
-        List<Comment> allComments = commentRepository.findByRoadmap_RoadmapIdOrderByCreatedAtDesc(roadmapId);
+        List<Comment> comments = commentRepository.findByRoadmap_RoadmapIdOrderByCreatedAtAsc(roadmapId);
 
-        // 1. 댓글 ID → 응답 DTO 매핑
-        Map<Long, CommentResponse> dtoMap = new HashMap<>();
-        Map<Long, List<CommentResponse>> childMap = new HashMap<>();
+        Map<Long, Long> likeCountMap = commentLikeService.getCommentLikeCounts(comments); // 아래 참고
+        Set<Long> likedCommentIdsByMe = commentLikeService.getLikedCommentIdsByUser(userId, comments);
 
-        for (Comment comment : allComments) {
-            long likeCount = commentLikeService.countCommentLikes(comment.getCommentId());
-            boolean likedByMe = commentLikeService.isLiked(userId, comment.getCommentId());
-
-            CommentResponse dto = CommentResponse.from(comment, likeCount, likedByMe);
-            dtoMap.put(comment.getCommentId(), dto);
-
-            if (comment.getParent() != null) {
-                childMap.computeIfAbsent(comment.getParent().getCommentId(), k -> new ArrayList<>())
-                        .add(dto);
-            }
-        }
-
-        // 2. 트리 구조로 묶기
-        List<CommentResponse> roots = new ArrayList<>();
-        for (Comment comment : allComments) {
-            if (comment.getParent() == null) {
-                Long cid = comment.getCommentId();
-                List<CommentResponse> replies = childMap.getOrDefault(cid, List.of());
-
-                CommentResponse response = CommentResponse.withReplies(
-                        comment,
-                        commentLikeService.countCommentLikes(cid),
-                        commentLikeService.isLiked(userId, cid),
-                        replies
-                );
-                roots.add(response);
-            }
-        }
-
-        return roots;
+        return CommentTreeBuilder.buildCommentTree(comments, likeCountMap, likedCommentIdsByMe);
     }
 
     /**
