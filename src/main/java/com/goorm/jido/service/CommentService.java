@@ -126,7 +126,9 @@ public class CommentService {
         List<Comment> comments = commentRepository.findByRoadmap_RoadmapIdOrderByCreatedAtAsc(roadmapId);
 
         Map<Long, Long> likeCountMap = commentLikeService.getCommentLikeCounts(comments); // 아래 참고
-        Set<Long> likedCommentIdsByMe = commentLikeService.getLikedCommentIdsByUser(userId, comments);
+        Set<Long> likedCommentIdsByMe = (userId != null)
+                ? commentLikeService.getLikedCommentIdsByUser(userId, comments)
+                : Set.of(); // 비회원일 경우 빈 Set
 
         return CommentTreeBuilder.buildCommentTree(comments, likeCountMap, likedCommentIdsByMe);
     }

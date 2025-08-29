@@ -58,7 +58,7 @@ public class CommentController {
     @GetMapping
     public List<CommentResponse> getComments(@PathVariable Long roadmapId,
                                              @AuthenticationPrincipal CustomUserDetails user) {
-        Long userId = user.getUserId();
+        Long userId = (user != null) ? user.getUserId() : null;
         return commentService.getCommentsByRoadmap(roadmapId, userId);
     }
 }
