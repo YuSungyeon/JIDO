@@ -1,15 +1,16 @@
 package com.goorm.jido.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,8 +19,9 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "step")
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Step {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "step_id")
@@ -27,26 +29,36 @@ public class Step {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "section_id", nullable = false)
-    @JsonIgnore                         // 🔴 역참조(스텝->섹션) 숨김
-    @OnDelete(action = OnDeleteAction.CASCADE)     // ✅ DB 레벨 연쇄삭제 힌트
-    private RoadmapSection roadmapSection; // 소속 섹션
+    @JsonIgnore                                  // 역참조 직렬화 방지
+    @OnDelete(action = OnDeleteAction.CASCADE)   // DB 레벨 연쇄삭제 힌트
+    private RoadmapSection roadmapSection;
 
     @Column(name = "title", nullable = false)
-    private String title; // 스텝 제목
+    private String title;
 
     @Column(name = "step_number", nullable = false)
-    private Long stepNumber; // 스텝 순서
+    private Long stepNumber;
 
     @CreationTimestamp
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updated_at", insertable = false, nullable = true)
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "step", cascade = CascadeType.ALL)
-    private List<StepContent> stepContents; // 해당 스텝의 컨텐츠들
+    @Builder.Default
+    @OneToMany(mappedBy = "step", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("createdAt ASC")
+    private List<StepContent> stepContents = new ArrayList<>();
+
+    // ====== 편의 메서드 (세터 대신 내부 전용) ======
+    void assignSection(RoadmapSection section) {  // package-private
+        this.roadmapSection = section;
+    }
+    void clearSection() {                         // package-private
+        this.roadmapSection = null;
+    }
 
     public void update(String title, Long stepNumber) {
         if (title != null && !title.isBlank()) this.title = title;
