@@ -31,6 +31,13 @@ public class UserService {
             .orElseThrow(() -> new IllegalArgumentException());
   }
 
+
+  public User findByUserLoginId(String userLoginId) {
+    return userRepository.findByUserLoginId(userLoginId)
+            .orElseThrow(() -> new IllegalArgumentException());
+  }
+
+
   public Long save(SignupRequestDto dto) {
     // 1. 유저 정보 저장
     User saved =  userRepository.save(User.builder()

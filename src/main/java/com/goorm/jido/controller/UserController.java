@@ -38,6 +38,42 @@ public class UserController {
   }
 
 
+
+  // 닉네임으로 유저 검색
+  @GetMapping("/user/{nickname}")
+  @Operation(
+          description = "사용자의 닉네임으로 유저 정보를 검색합니다."
+  )
+  public ResponseEntity<UserResponseDto> findByNickname(@PathVariable String nickname) {
+    try{
+      User user = userService.findByNickname(nickname);
+
+      return ResponseEntity.status(HttpStatus.OK)
+              .body(UserResponseDto.from(user));
+
+    }catch (IllegalArgumentException e){
+      return ResponseEntity.notFound().build();
+    }
+  }
+
+  // 로그인용 아이디로 유저 검색
+  @GetMapping("/user/{userLoginId}")
+  @Operation(
+          description = "사용자의 로그인 아이디로 유저 정보를 검색합니다."
+  )
+  public ResponseEntity<UserResponseDto> findByUserLoginId(@PathVariable String userLoginId) {
+    try{
+      User user = userService.findByUserLoginId(userLoginId);
+
+      return ResponseEntity.status(HttpStatus.OK)
+              .body(UserResponseDto.from(user));
+
+    }catch (IllegalArgumentException e){
+      return ResponseEntity.notFound().build();
+    }
+  }
+
+
   // 사용자 조회 (유저 찾기)
   @GetMapping("/user/{id}")
   public ResponseEntity<UserResponseDto> findById(@PathVariable Long id) {
