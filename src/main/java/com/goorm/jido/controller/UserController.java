@@ -31,7 +31,7 @@ public class UserController {
   private final AuthenticationManager authenticationManager;
 
   // 사용자 정보 수정
-  @PatchMapping("/user/{id}")
+  @PatchMapping("/user/id/{id}")
   public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserPatchRequestDto dto) {
     return ResponseEntity.status(HttpStatus.OK)
             .body(userService.patchUser(id, dto));
@@ -40,7 +40,7 @@ public class UserController {
 
 
   // 닉네임으로 유저 검색
-  @GetMapping("/user/{nickname}")
+  @GetMapping("/user/nick/{nickname}")
   @Operation(
           description = "사용자의 닉네임으로 유저 정보를 검색합니다."
   )
@@ -57,7 +57,7 @@ public class UserController {
   }
 
   // 로그인용 아이디로 유저 검색
-  @GetMapping("/user/{userLoginId}")
+  @GetMapping("/user/loginid/{userLoginId}")
   @Operation(
           description = "사용자의 로그인 아이디로 유저 정보를 검색합니다."
   )
