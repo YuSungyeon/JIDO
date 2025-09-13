@@ -18,8 +18,8 @@ public class SearchService {
     private final RoadmapRepository roadmapRepository;
 
     public SearchResponse search(String query) {
-        List<UserSearchResult> users = userRepository.searchByNicknameLikeOrInitial(query);
-        List<RoadmapSearchResult> roadmaps = roadmapRepository.searchByTitleOrInitial(query);
+        List<UserSearchResult> users = userRepository.searchByNicknameLikeOrInitial("%" + query + "%");
+        List<RoadmapSearchResult> roadmaps = roadmapRepository.searchByTitleOrInitial("%" + query + "%");
         return new SearchResponse(users, roadmaps);
     }
 }
