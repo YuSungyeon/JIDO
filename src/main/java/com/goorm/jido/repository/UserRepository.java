@@ -16,6 +16,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
   Optional<User> findByUserLoginId(String userLoginId);
 
   @Query("SELECT new com.goorm.jido.dto.UserSearchResult(u.userId, u.nickname) " +
-          "FROM User u WHERE u.nickname LIKE :query")
+          "FROM User u WHERE LOWER(u.nickname) LIKE LOWER(:query)")
   List<UserSearchResult> searchByNicknameLikeOrInitial(@Param("query") String query);
 }
