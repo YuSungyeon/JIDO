@@ -19,7 +19,9 @@ public class SearchService {
 
     public SearchResponse search(String query) {
         List<UserSearchResult> users = userRepository.searchByNicknameLikeOrInitial("%" + query.toLowerCase() + "%");
+        System.out.println("users.size() = " + users.size());
         List<RoadmapSearchResult> roadmaps = roadmapRepository.searchByTitleOrInitial("%" + query.toLowerCase() + "%");
+        System.out.println("roadmaps.size() = " + roadmaps.size());
         return new SearchResponse(users, roadmaps);
     }
 }
