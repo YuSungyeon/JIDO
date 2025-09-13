@@ -17,7 +17,7 @@ public interface RoadmapRepository extends JpaRepository<Roadmap, Long> {
     Optional<Roadmap> findByRoadmapIdAndAuthor_UserId(Long roadmapId, Long userId);
 
     @Query("SELECT new com.goorm.jido.dto.RoadmapSearchResult(r.roadmapId, r.title) " +
-            "FROM Roadmap r WHERE r.title LIKE %:query%")
+            "FROM Roadmap r WHERE r.title LIKE :query")
     List<RoadmapSearchResult> searchByTitleOrInitial(@Param("query") String query);
 
     // 🔸 상세 조회용: 로드맵 + 섹션까지만 fetch-join (다중 bag 이슈 회피)
