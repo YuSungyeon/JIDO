@@ -73,7 +73,8 @@ public class WebSecurityConfig {
                             "/step-contents/**",
                             "/categories",
                             "/user",
-                            "/user/**"
+                            "/user/**",
+                            "/api/search"
                     ).permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/roadmaps/**").permitAll()
                     .requestMatchers(HttpMethod.PUT, "/sections/**", "/steps/**", "/step-contents/**").authenticated()
